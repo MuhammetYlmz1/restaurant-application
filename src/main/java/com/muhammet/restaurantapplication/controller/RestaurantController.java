@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/restaurant/")
+@RequestMapping("/api/restaurant")
 public class RestaurantController {
 
     private final RestaurantService restaurantService;
@@ -29,7 +29,7 @@ public class RestaurantController {
     public void createRestaurant(@Valid @RequestBody CreateRestaurantRequest restaurantRequest) throws Exception {
         restaurantService.createRestaurant(restaurantRequest);
     }
-    @GetMapping("id/{id}")
+    @GetMapping("/getByRestaurantId/{id}")
     public ResponseEntity<RestaurantDTO> getByRestaurantId(@Valid @PathVariable("id") Long id){
         return ResponseEntity.ok( restaurantService.getRestaurantById(id));
     }
@@ -37,7 +37,7 @@ public class RestaurantController {
     public ResponseEntity<RestaurantDTO> updateRestaurant(@Valid @RequestBody UpdateRestaurantRequest updateRestaurantRequest){
        return ResponseEntity.ok(restaurantService.updateRestaurant(updateRestaurantRequest));
     }
-    @GetMapping("name/{name}")
+    @GetMapping("/getByRestaurantName/{name}")
     public RestaurantDTO getByRestaurantName(@Valid @PathVariable("name") String name){
         return restaurantService.findByRestaurandName(name);
     }

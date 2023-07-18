@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetAllFoodsResponse {
-
+    private Long id;
     private String foodName;
     private Double price;
     private Long branchId;

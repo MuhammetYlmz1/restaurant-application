@@ -1,10 +1,5 @@
 package com.muhammet.restaurantapplication.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.muhammet.restaurantapplication.model.Food;
-import com.muhammet.restaurantapplication.model.Restaurant;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +14,6 @@ import java.util.List;
 public class BranchDTO {
 
     private Long id;
-
 
     private String adress;
 

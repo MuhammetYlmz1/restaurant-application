@@ -1,6 +1,5 @@
 package com.muhammet.restaurantapplication.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +17,6 @@ import java.util.List;
 public class Restaurant {
 
     @Id
-    @GeneratedValue(generator = "UUID")
     @Column(name = "id")
     private Long id;
 

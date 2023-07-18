@@ -3,26 +3,19 @@ package com.muhammet.restaurantapplication.controller;
 import com.muhammet.restaurantapplication.dto.BranchDTO;
 import com.muhammet.restaurantapplication.dto.requests.CreateBranchRequest;
 import com.muhammet.restaurantapplication.dto.requests.UpdateBranchRequest;
-import com.muhammet.restaurantapplication.dto.responses.GetAllBranchResponse;
-import com.muhammet.restaurantapplication.model.Branch;
-import com.muhammet.restaurantapplication.repository.BranchRepository;
 import com.muhammet.restaurantapplication.service.BranchService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/branch/")
+@RequestMapping("/api/branch")
+@RequiredArgsConstructor
 public class BranchController {
-
     private final BranchService branchService;
-
-    public BranchController(BranchService branchService) {
-        this.branchService = branchService;
-    }
 
     @GetMapping
     public List<BranchDTO> getAll(){
@@ -30,11 +23,11 @@ public class BranchController {
     }
 
     @PostMapping
-    public ResponseEntity<CreateBranchRequest> createBranchRequestResponseEntity(@Valid @RequestBody CreateBranchRequest createBranchRequest){
+    public ResponseEntity<BranchDTO> createBranchRequestResponseEntity(@Valid @RequestBody CreateBranchRequest createBranchRequest){
         return ResponseEntity.ok(branchService.createBranch(createBranchRequest));
     }
     @PutMapping
-    public ResponseEntity<UpdateBranchRequest> updateBranchRequestResponseEntity(@Valid @RequestBody UpdateBranchRequest updateBranchRequest){
+    public ResponseEntity<BranchDTO> updateBranchRequestResponseEntity(@Valid @RequestBody UpdateBranchRequest updateBranchRequest){
         return ResponseEntity.ok(branchService.updateBranch(updateBranchRequest));
     }
     @DeleteMapping
@@ -47,6 +40,10 @@ public class BranchController {
         return branchService.getById(id);
     }
 
+    @GetMapping("/getByDistrict/{district}")
+    public ResponseEntity<List<BranchDTO>> getByDistrict(@PathVariable String district){
+        return ResponseEntity.ok(branchService.getByDistrict(district));
+    }
 
 
 }

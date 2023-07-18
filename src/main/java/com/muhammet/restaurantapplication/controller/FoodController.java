@@ -4,7 +4,6 @@ import com.muhammet.restaurantapplication.dto.FoodDTO;
 import com.muhammet.restaurantapplication.dto.requests.CreateFoodRequest;
 import com.muhammet.restaurantapplication.dto.requests.UpdateFoodRequest;
 import com.muhammet.restaurantapplication.dto.responses.GetAllFoodsResponse;
-import com.muhammet.restaurantapplication.model.Food;
 import com.muhammet.restaurantapplication.service.FoodService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +22,7 @@ public class FoodController {
     }
 
     @GetMapping
-    public ResponseEntity<List<GetAllFoodsResponse>> getAllFoods(){
+    public ResponseEntity<List<FoodDTO>> getAllFoods(){
         return ResponseEntity.ok(foodService.getAllFoods());
     }
 
@@ -41,8 +40,8 @@ public class FoodController {
         return ResponseEntity.ok(foodService.findByFoodName(name));
     }
 
-    @GetMapping("id/{id}")
-    public ResponseEntity<Food> getById(@PathVariable Long id){
+    @GetMapping("getFoodById/{id}")
+    public ResponseEntity<FoodDTO> getById(@PathVariable Long id){
         return ResponseEntity.ok(foodService.getFoodById(id));
     }
     @DeleteMapping

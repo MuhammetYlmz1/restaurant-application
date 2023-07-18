@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class FoodDTO {
 
+    private Long id;
     private String foodName;
     private Double price;
+    private Long branchId;
 }

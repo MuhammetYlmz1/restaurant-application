@@ -28,6 +28,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         this.restaurantRepository = restaurantRepository;
         this.branchRepository = branchRepository;
         this.modelMapper = modelMapper;
+
     }
 
     public List<RestaurantDTO> getAllRestaurants(){
