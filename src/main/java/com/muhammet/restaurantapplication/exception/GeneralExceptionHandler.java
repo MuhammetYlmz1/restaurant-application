@@ -1,7 +1,5 @@
 package com.muhammet.restaurantapplication.exception;
 
-import com.muhammet.restaurantapplication.model.Food;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;

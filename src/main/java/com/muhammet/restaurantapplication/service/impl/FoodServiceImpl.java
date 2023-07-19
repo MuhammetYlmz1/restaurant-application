@@ -3,7 +3,6 @@ package com.muhammet.restaurantapplication.service.impl;
 import com.muhammet.restaurantapplication.dto.FoodDTO;
 import com.muhammet.restaurantapplication.dto.requests.CreateFoodRequest;
 import com.muhammet.restaurantapplication.dto.requests.UpdateFoodRequest;
-import com.muhammet.restaurantapplication.dto.responses.GetAllFoodsResponse;
 import com.muhammet.restaurantapplication.exception.FoodNotFoundException;
 import com.muhammet.restaurantapplication.model.Food;
 import com.muhammet.restaurantapplication.repository.FoodRepository;
@@ -82,10 +81,10 @@ public class FoodServiceImpl implements FoodService {
         repository.deleteById(id);
     }
 
-    public GetAllFoodsResponse findByFoodName(String name){
+    public FoodDTO findByFoodName(String name){
         Food food=repository.findByFoodName(name);
 
-        var result=this.modelMapper.map(food,GetAllFoodsResponse.class);
+        var result=this.modelMapper.map(food,FoodDTO.class);
         return result;
 
     }

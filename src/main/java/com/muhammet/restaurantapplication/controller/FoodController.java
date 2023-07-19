@@ -3,7 +3,6 @@ package com.muhammet.restaurantapplication.controller;
 import com.muhammet.restaurantapplication.dto.FoodDTO;
 import com.muhammet.restaurantapplication.dto.requests.CreateFoodRequest;
 import com.muhammet.restaurantapplication.dto.requests.UpdateFoodRequest;
-import com.muhammet.restaurantapplication.dto.responses.GetAllFoodsResponse;
 import com.muhammet.restaurantapplication.service.FoodService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +35,7 @@ public class FoodController {
     }
 
     @GetMapping("name/{name}")
-    public ResponseEntity<GetAllFoodsResponse> findByFoodName(@Valid @PathVariable String name){
+    public ResponseEntity<FoodDTO> findByFoodName(@Valid @PathVariable String name){
         return ResponseEntity.ok(foodService.findByFoodName(name));
     }
 

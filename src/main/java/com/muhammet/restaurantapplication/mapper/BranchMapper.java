@@ -1,6 +1,5 @@
 package com.muhammet.restaurantapplication.mapper;
 
-import com.muhammet.restaurantapplication.base.BaseMapper;
 import com.muhammet.restaurantapplication.dto.BranchDTO;
 import com.muhammet.restaurantapplication.model.Branch;
 import lombok.RequiredArgsConstructor;

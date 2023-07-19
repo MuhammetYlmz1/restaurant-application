@@ -102,7 +102,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     public RestaurantDTO convertToRestaurantDto(Restaurant restaurant){
         List<Branch> branchList = restaurant.getBranchs();
 
-        List<GetAllBranchResponse> convertedList = branchList.stream()
+        List<GetAllBranchResponse> convertedBranchList = branchList.stream()
                 .map(branch -> modelMapper.map(branch, GetAllBranchResponse.class))
                 .collect(Collectors.toList());
 
@@ -111,7 +111,7 @@ public class RestaurantServiceImpl implements RestaurantService {
                 .adress(restaurant.getAdress())
                 .phone(restaurant.getPhone())
                 .id(restaurant.getId())
-                .branchs(convertedList)
+                .branchs(convertedBranchList)
                 .build();
     }
   /*  public boolean checkCreateRestaurantRequestFields(CreateRestaurantRequest request){
