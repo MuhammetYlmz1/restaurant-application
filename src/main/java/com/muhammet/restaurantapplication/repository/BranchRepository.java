@@ -9,5 +9,7 @@ public interface BranchRepository extends JpaRepository<Branch,Long> {
 
     List<Branch> findByDistrict(String district);
 
+    List<Branch> findByRestaurantId(Long id);
+
 
 }

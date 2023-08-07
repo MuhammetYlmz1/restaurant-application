@@ -1,15 +1,11 @@
 package com.muhammet.restaurantapplication.dto.requests;
 
-import com.muhammet.restaurantapplication.model.Branch;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import javax.validation.constraints.NotBlank;
 
 @Data
 @AllArgsConstructor

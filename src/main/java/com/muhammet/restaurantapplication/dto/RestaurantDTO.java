@@ -1,8 +1,6 @@
 package com.muhammet.restaurantapplication.dto;
 
 import com.muhammet.restaurantapplication.dto.responses.GetAllBranchResponse;
-import com.muhammet.restaurantapplication.model.Branch;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

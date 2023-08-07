@@ -28,6 +28,7 @@ public class FoodServiceImpl implements FoodService {
     }
 
 
+
     public List<FoodDTO> getAllFoods() {
         List<Food> foods = repository.findAll();
 

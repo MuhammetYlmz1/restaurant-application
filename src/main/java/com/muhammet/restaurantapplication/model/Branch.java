@@ -1,8 +1,8 @@
 package com.muhammet.restaurantapplication.model;
 
-import jakarta.persistence.*;
 import lombok.*;
 
+import javax.persistence.*;
 import java.util.List;
 
 @Getter
@@ -31,6 +31,7 @@ public class Branch {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="restaurant_id")
     private Restaurant restaurantId;
+
 
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "branch")
     private List<Food> menu;

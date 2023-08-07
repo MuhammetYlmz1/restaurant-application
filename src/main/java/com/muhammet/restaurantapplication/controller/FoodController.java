@@ -4,10 +4,10 @@ import com.muhammet.restaurantapplication.dto.FoodDTO;
 import com.muhammet.restaurantapplication.dto.requests.CreateFoodRequest;
 import com.muhammet.restaurantapplication.dto.requests.UpdateFoodRequest;
 import com.muhammet.restaurantapplication.service.FoodService;
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController

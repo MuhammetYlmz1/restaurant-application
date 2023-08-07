@@ -45,6 +45,8 @@ public class RestaurantServiceImpl implements RestaurantService {
             restaurantDTOS.add(restaurantDTO);
         });*/
 
+
+
         return restaurantRepository.findAll().stream()
                 .map(restaurants->this.modelMapper.map(restaurants,RestaurantDTO.class)).collect(Collectors.toList());
 

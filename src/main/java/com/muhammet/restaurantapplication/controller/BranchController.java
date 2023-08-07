@@ -4,11 +4,11 @@ import com.muhammet.restaurantapplication.dto.BranchDTO;
 import com.muhammet.restaurantapplication.dto.requests.CreateBranchRequest;
 import com.muhammet.restaurantapplication.dto.requests.UpdateBranchRequest;
 import com.muhammet.restaurantapplication.service.BranchService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
