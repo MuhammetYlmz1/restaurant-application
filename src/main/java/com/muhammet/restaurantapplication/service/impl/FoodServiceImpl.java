@@ -3,10 +3,14 @@ package com.muhammet.restaurantapplication.service.impl;
 import com.muhammet.restaurantapplication.dto.FoodDTO;
 import com.muhammet.restaurantapplication.dto.requests.CreateFoodRequest;
 import com.muhammet.restaurantapplication.dto.requests.UpdateFoodRequest;
+import com.muhammet.restaurantapplication.exception.BranchNotFoundException;
 import com.muhammet.restaurantapplication.exception.FoodNotFoundException;
+import com.muhammet.restaurantapplication.model.Branch;
 import com.muhammet.restaurantapplication.model.Food;
+import com.muhammet.restaurantapplication.repository.BranchRepository;
 import com.muhammet.restaurantapplication.repository.FoodRepository;
 import com.muhammet.restaurantapplication.service.FoodService;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -14,18 +18,16 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Service
+@RequiredArgsConstructor
 public class FoodServiceImpl implements FoodService {
 
     private final FoodRepository repository;
-    //private final BranchService branchService;
     private final ModelMapper modelMapper;
+    private final BranchRepository branchRepository;
 
-    public FoodServiceImpl(FoodRepository repository, ModelMapper modelMapper) {
-        this.repository = repository;
-        //this.branchService = branchService;
-        this.modelMapper = modelMapper;
-    }
+
 
 
 
@@ -34,14 +36,15 @@ public class FoodServiceImpl implements FoodService {
 
         var getAllFoodsResponses=foods.
                 stream()
-                .map(food -> this.modelMapper.map(food, FoodDTO.class)).collect(Collectors.toList());
+                .map(food -> this.modelMapper.map(food, FoodDTO.class))
+                .collect(Collectors.toList());
+
 
         return getAllFoodsResponses;
     }
 
     public void createFood(CreateFoodRequest createFoodRequest) {
 
-        // isCheckMyFood(createFoodRequest.getBranchId(), createFoodRequest.getFoodName(), createFoodRequest.getPrice());
 
         /*Food food=Food.builder()
                 .foodName(createFoodRequest.getFoodName())
@@ -52,7 +55,17 @@ public class FoodServiceImpl implements FoodService {
         food.setBranch(branch);
         repository.save(food);*/
 
-        Food food= modelMapper.map(createFoodRequest,Food.class);
+        var branch=branchRepository.getById(createFoodRequest.getBranchId());
+        if (branch == null) {
+            throw new BranchNotFoundException("Böyle bir şube yoktur");
+        }
+
+        Food food=Food.builder()
+                .foodName(createFoodRequest.getFoodName())
+                .price(createFoodRequest.getPrice())
+                .branch(modelMapper.map(branch, Branch.class))
+                .build();
+
         repository.save(food);
 
 
@@ -79,6 +92,8 @@ public class FoodServiceImpl implements FoodService {
     }
 
     public void deleteByFoodId(Long id){
+        FoodDTO foodDTO=getFoodById(id);
+
         repository.deleteById(id);
     }
 
@@ -108,4 +123,14 @@ public class FoodServiceImpl implements FoodService {
                 .collect(Collectors.toList());
 
     }
+
+    private boolean isValid(CreateFoodRequest request){
+        if (!request.getFoodName().isBlank() &&
+            request.getPrice() != null && request.getPrice()>0){
+            return true;
+        }
+        return false;
+
+    }
+
 }

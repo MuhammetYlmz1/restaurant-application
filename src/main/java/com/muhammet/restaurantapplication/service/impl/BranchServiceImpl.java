@@ -122,16 +122,6 @@ public class BranchServiceImpl implements BranchService {
         return branchDTO;
     }
 
-
-    /*public boolean fieldControl(CreateBranchRequest request){
-        if (request.getAdress().equals("")|| request. ) {
-
-        }
-
-    }*/
-
-    /*public BranchDTO convertToBranchDTO(){
-
-    }*/
+   // public Optional<Branch>
 
 }

@@ -11,7 +11,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/food/")
+@RequestMapping("/api/food")
 public class FoodController {
 
     private final FoodService foodService;
@@ -26,25 +26,25 @@ public class FoodController {
     }
 
     @PostMapping
-    public void addFood(@Valid @RequestBody CreateFoodRequest createFoodRequest) throws Exception {
+    public void add(@Valid @RequestBody CreateFoodRequest createFoodRequest) throws Exception {
         foodService.createFood(createFoodRequest);
     }
     @PutMapping
-    public void updateFood(@Valid @RequestBody UpdateFoodRequest updateFoodRequest){
+    public void update(@Valid @RequestBody UpdateFoodRequest updateFoodRequest){
          foodService.updateFood(updateFoodRequest);
     }
 
-    @GetMapping("name/{name}")
+    @GetMapping("/name/{name}")
     public ResponseEntity<FoodDTO> findByFoodName(@Valid @PathVariable String name){
         return ResponseEntity.ok(foodService.findByFoodName(name));
     }
 
-    @GetMapping("getFoodById/{id}")
+    @GetMapping("/getFoodById/{id}")
     public ResponseEntity<FoodDTO> getById(@PathVariable Long id){
         return ResponseEntity.ok(foodService.getFoodById(id));
     }
     @DeleteMapping
-    public void deleteFood(@PathVariable Long id){
+    public void delete(@PathVariable Long id){
         foodService.deleteByFoodId(id);
     }
 

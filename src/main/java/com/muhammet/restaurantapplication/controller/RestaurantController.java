@@ -26,7 +26,7 @@ public class RestaurantController {
     }
 
     @PostMapping
-    public void createRestaurant(@Valid @RequestBody CreateRestaurantRequest restaurantRequest) throws Exception {
+    public void create(@Valid @RequestBody CreateRestaurantRequest restaurantRequest) throws Exception {
         restaurantService.createRestaurant(restaurantRequest);
     }
     @GetMapping("/getByRestaurantId/{id}")
@@ -34,7 +34,7 @@ public class RestaurantController {
         return ResponseEntity.ok( restaurantService.getRestaurantById(id));
     }
     @PutMapping
-    public ResponseEntity<RestaurantDTO> updateRestaurant(@Valid @RequestBody UpdateRestaurantRequest updateRestaurantRequest){
+    public ResponseEntity<RestaurantDTO> update(@Valid @RequestBody UpdateRestaurantRequest updateRestaurantRequest){
        return ResponseEntity.ok(restaurantService.updateRestaurant(updateRestaurantRequest));
     }
     @GetMapping("/getByRestaurantName/{name}")

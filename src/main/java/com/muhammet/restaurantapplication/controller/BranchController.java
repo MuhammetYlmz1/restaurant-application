@@ -23,15 +23,15 @@ public class BranchController {
     }
 
     @PostMapping
-    public ResponseEntity<BranchDTO> createBranchRequestResponseEntity(@Valid @RequestBody CreateBranchRequest createBranchRequest){
+    public ResponseEntity<BranchDTO> create(@Valid @RequestBody CreateBranchRequest createBranchRequest){
         return ResponseEntity.ok(branchService.createBranch(createBranchRequest));
     }
     @PutMapping
-    public ResponseEntity<BranchDTO> updateBranchRequestResponseEntity(@Valid @RequestBody UpdateBranchRequest updateBranchRequest){
+    public ResponseEntity<BranchDTO> update(@Valid @RequestBody UpdateBranchRequest updateBranchRequest){
         return ResponseEntity.ok(branchService.updateBranch(updateBranchRequest));
     }
     @DeleteMapping
-    public void deleteBranc(@Valid @PathVariable Long id){
+    public void deleteBranch(@Valid @PathVariable Long id){
         branchService.deleteBranch(id);
     }
 

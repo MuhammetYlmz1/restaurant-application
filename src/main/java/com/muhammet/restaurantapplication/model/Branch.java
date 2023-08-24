@@ -1,5 +1,6 @@
 package com.muhammet.restaurantapplication.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,8 +29,10 @@ public class Branch {
     @Column(name = "district")
     private String district;
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="restaurant_id")
+    @JsonIgnore
     private Restaurant restaurantId;
 
 

@@ -29,7 +29,7 @@ public class Restaurant {
     @Column(name="adress")
     private String adress;
 
-    //@JsonManagedReference
+
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "restaurantId")
     private List<Branch> branchs;
 
