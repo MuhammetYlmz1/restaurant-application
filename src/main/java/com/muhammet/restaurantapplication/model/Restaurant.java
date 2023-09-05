@@ -1,13 +1,11 @@
 package com.muhammet.restaurantapplication.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.muhammet.restaurantapplication.validator.PhoneNumber;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
-
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor
@@ -18,12 +16,14 @@ public class Restaurant {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name="restaurant_name")
     private String restaurantName;
 
     @Column(name = "phone")
+    @PhoneNumber
     private String phone;
 
     @Column(name="adress")

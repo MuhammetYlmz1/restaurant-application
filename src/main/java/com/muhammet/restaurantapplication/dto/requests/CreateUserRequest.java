@@ -1,6 +1,6 @@
 package com.muhammet.restaurantapplication.dto.requests;
 
-import com.muhammet.restaurantapplication.model.UserRole;
+import com.muhammet.restaurantapplication.model.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -4,37 +4,40 @@ import com.muhammet.restaurantapplication.dto.RestaurantDTO;
 import com.muhammet.restaurantapplication.dto.requests.CreateRestaurantRequest;
 import com.muhammet.restaurantapplication.dto.requests.UpdateRestaurantRequest;
 import com.muhammet.restaurantapplication.dto.responses.GetAllBranchResponse;
+import com.muhammet.restaurantapplication.exception.BusinessException.Ex;
+import com.muhammet.restaurantapplication.exception.ExceptionUtil;
 import com.muhammet.restaurantapplication.exception.RestaurantNotFoundException;
 import com.muhammet.restaurantapplication.model.Branch;
 import com.muhammet.restaurantapplication.model.Restaurant;
-import com.muhammet.restaurantapplication.repository.BranchRepository;
 import com.muhammet.restaurantapplication.repository.RestaurantRepository;
 import com.muhammet.restaurantapplication.service.RestaurantService;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Slf4j
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
-    private final BranchRepository branchRepository;
     private final ModelMapper modelMapper;
+    private final ExceptionUtil exceptionUtil;
 
-    public RestaurantServiceImpl(RestaurantRepository restaurantRepository, BranchRepository branchRepository, ModelMapper modelMapper) {
+    public RestaurantServiceImpl(RestaurantRepository restaurantRepository, ModelMapper modelMapper, ExceptionUtil exceptionUtil) {
 
         this.restaurantRepository = restaurantRepository;
-        this.branchRepository = branchRepository;
+        //this.branchRepository = branchRepository;
         this.modelMapper = modelMapper;
 
+        this.exceptionUtil = exceptionUtil;
     }
 
     public List<RestaurantDTO> getAllRestaurants(){
 
 
-      /*  List<Restaurant> restaurants=restaurantRepository.findAll();
+      /*List<Restaurant> restaurants=restaurantRepository.findAll();
         List<RestaurantDTO> restaurantDTOS=new ArrayList<>();
         restaurants.forEach(restaurant ->{
             RestaurantDTO restaurantDTO=new RestaurantDTO();
@@ -47,6 +50,8 @@ public class RestaurantServiceImpl implements RestaurantService {
 
 
 
+
+
         return restaurantRepository.findAll().stream()
                 .map(restaurants->this.modelMapper.map(restaurants,RestaurantDTO.class)).collect(Collectors.toList());
 
@@ -54,15 +59,20 @@ public class RestaurantServiceImpl implements RestaurantService {
                 .map(x-> convertToRestaurantDto(x)).collect(Collectors.toList());*/
     }
 
-    public void createRestaurant(CreateRestaurantRequest restaurantRequest) throws Exception {
-        if (restaurantRequest.getAdress().equals("") || restaurantRequest.getRestaurantName().equals("") || restaurantRequest.getPhone().equals("")){
-            throw new Exception("Alanları doldurunuz!!");
+    public RestaurantDTO create(CreateRestaurantRequest restaurantRequest) {
+        boolean existName=existsByRestaurantName(restaurantRequest.getRestaurantName());
+        if (existName){
+            throw exceptionUtil.buildException(Ex.RESTAURANT_ALREADY_EXISTS_EXCEPTION);
         }
-        Restaurant restaurant= modelMapper.map(restaurantRequest,Restaurant.class);
+        Restaurant restaurant=modelMapper.map(restaurantRequest,Restaurant.class);
         restaurantRepository.save(restaurant);
+
+        return convertToRestaurantDto(restaurant);
     }
 
-    public RestaurantDTO updateRestaurant(UpdateRestaurantRequest updateRestaurantRequest){
+
+
+    public RestaurantDTO update(UpdateRestaurantRequest updateRestaurantRequest){
         Restaurant updating=this.restaurantRepository.findById(updateRestaurantRequest.getId())
                 .orElseThrow(()->new RestaurantNotFoundException("Böyle bir restorant bulunmamaktadır."));
 
@@ -77,7 +87,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     }
 
-    public void deleteRestaurant(Long id){
+    public void delete(Long id){
         restaurantRepository.deleteById(id);
 
     }
@@ -85,20 +95,28 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     public RestaurantDTO getRestaurantById(Long id){
         var restaurant=restaurantRepository.findById(id)
-                .orElseThrow(()->new RestaurantNotFoundException("Böyle bir Id bulunmamaktadır"));
+                .orElseThrow(()->exceptionUtil.buildException(Ex.RESTAURANT_NOT_FOUND_EXCEPTION));
 
-        RestaurantDTO restaurantDTO= modelMapper.map(restaurant,RestaurantDTO.class);
-        return restaurantDTO;
+        return modelMapper.map(restaurant,RestaurantDTO.class);
     }
 
-    public RestaurantDTO findByRestaurandName(String restaurantName){
+    public RestaurantDTO findByRestaurantName(String restaurantName){
         Restaurant foundRestaurant=restaurantRepository.findByRestaurantName(restaurantName);
 
-        var restaurantDto=this.modelMapper.map(foundRestaurant,RestaurantDTO.class);
 
-
-        return restaurantDto;
+        return this.modelMapper.map(foundRestaurant,RestaurantDTO.class);
     }
+
+    @Override
+    public boolean existsByRestaurantName(String name) {
+        /*if (name.isEmpty()) {
+            return
+        }*/
+
+        return restaurantRepository.existsByRestaurantName(name);
+    }
+
+
 
 
     public RestaurantDTO convertToRestaurantDto(Restaurant restaurant){
@@ -116,13 +134,6 @@ public class RestaurantServiceImpl implements RestaurantService {
                 .branchs(convertedBranchList)
                 .build();
     }
-  /*  public boolean checkCreateRestaurantRequestFields(CreateRestaurantRequest request){
 
-        if (request.getRestaurantName().isEmpty()|| request.getAdress().isEmpty()||request.getPhone().isEmpty()){
-
-        }
-
-
-    }*/
 
 }
