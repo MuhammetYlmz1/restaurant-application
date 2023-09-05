@@ -10,9 +10,10 @@ import java.util.List;
 public interface RestaurantService {
 
      List<RestaurantDTO> getAllRestaurants();
-     void createRestaurant(CreateRestaurantRequest restaurantRequest) throws Exception;
-     RestaurantDTO updateRestaurant(UpdateRestaurantRequest updateRestaurantRequest);
+     RestaurantDTO create(CreateRestaurantRequest restaurantRequest) throws Exception;
+     RestaurantDTO update(UpdateRestaurantRequest updateRestaurantRequest);
      RestaurantDTO getRestaurantById(Long id);
-     RestaurantDTO findByRestaurandName(String restaurantName);
+     RestaurantDTO findByRestaurantName(String restaurantName);
+     boolean existsByRestaurantName(String name);
 
 }

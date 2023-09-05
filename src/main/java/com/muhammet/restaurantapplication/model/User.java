@@ -1,5 +1,6 @@
 package com.muhammet.restaurantapplication.model;
 
+import com.muhammet.restaurantapplication.model.enums.UserRole;
 import lombok.*;
 
 import javax.persistence.*;

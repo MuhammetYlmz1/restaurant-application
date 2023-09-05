@@ -56,7 +56,7 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer(){
         return (web -> web
                 .ignoring()
-                .antMatchers("/api/restaurant/**",
+                .antMatchers("/api/**",
                         "/api/public",
                         "/api/auth/login",
                         "/swagger-ui.html/**",

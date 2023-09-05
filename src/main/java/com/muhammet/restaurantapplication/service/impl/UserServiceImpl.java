@@ -2,13 +2,13 @@ package com.muhammet.restaurantapplication.service.impl;
 
 import com.muhammet.restaurantapplication.dto.UserDto;
 import com.muhammet.restaurantapplication.dto.requests.CreateUserRequest;
-import com.muhammet.restaurantapplication.exception.GenericException;
+import com.muhammet.restaurantapplication.exception.BusinessException.Ex;
+import com.muhammet.restaurantapplication.exception.ExceptionUtil;
 import com.muhammet.restaurantapplication.model.User;
 import com.muhammet.restaurantapplication.repository.UserRepository;
 import com.muhammet.restaurantapplication.service.UserService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,18 +20,20 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     private final ModelMapper modelMapper;
+    private final ExceptionUtil exceptionUtil;
 
 
 
     @Override
-    public UserDto create(CreateUserRequest createUserRequest) {
-        createUserRequest.setPassword(passwordEncoder.encode(createUserRequest.getPassword()));
-        User user= createUserDtoToUser(createUserRequest);
-        var save=userRepository.save(user);
+    public User create(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        return UserDto.builder().username(user.getUserName())
-                .email(user.getEmail())
-                .role(user.getRole()).build();
+        return userRepository.save(user);
+
+       /* return UserDto.builder().username(save.getUserName())
+                .password(save.getPassword())
+                .email(save.getEmail())
+                .role(save.getRole()).build();*/
 
     }
 
@@ -47,10 +49,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByUserName(String username) {
         return userRepository.findByUserName(username)
-                .orElseThrow(()->GenericException.builder()
-                        .httpStatus(HttpStatus.BAD_REQUEST)
-                        .errorMessage("User not found")
-                        .build());
+                .orElseThrow(()->exceptionUtil.buildException(Ex.USER_NOT_FOUND_EXCEPTION));
     }
 
 
@@ -61,6 +60,7 @@ public class UserServiceImpl implements UserService {
                 .email(createUserRequest.getEmail())
                 .name(createUserRequest.getName())
                 .role(createUserRequest.getRole())
+                .password(createUserRequest.getPassword())
                 .build();
 
     }

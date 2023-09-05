@@ -76,7 +76,7 @@ public class BranchServiceImpl implements BranchService {
             })
             .collect(Collectors.toList());*/
     public BranchDTO createBranch(CreateBranchRequest createBranchRequest){
-        //fieldControl(createBranchRequest);
+
 
         Branch branch=this.modelMapper.map(createBranchRequest,Branch.class);
         Branch savedBranch = repository.save(branch);
@@ -122,6 +122,5 @@ public class BranchServiceImpl implements BranchService {
         return branchDTO;
     }
 
-   // public Optional<Branch>
 
 }
