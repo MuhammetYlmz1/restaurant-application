@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUser(String username) {
-        var user=findUserByUserName(username)
+        var user=findUserByUserName(username);
 
         return modelMapper.map(user,UserDto.class);
 
