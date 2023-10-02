@@ -3,7 +3,8 @@ package com.muhammet.restaurantapplication.service.impl;
 import com.muhammet.restaurantapplication.dto.FoodDTO;
 import com.muhammet.restaurantapplication.dto.requests.CreateFoodRequest;
 import com.muhammet.restaurantapplication.dto.requests.UpdateFoodRequest;
-import com.muhammet.restaurantapplication.exception.BranchNotFoundException;
+import com.muhammet.restaurantapplication.exception.BusinessException.Ex;
+import com.muhammet.restaurantapplication.exception.ExceptionUtil;
 import com.muhammet.restaurantapplication.exception.FoodNotFoundException;
 import com.muhammet.restaurantapplication.model.Branch;
 import com.muhammet.restaurantapplication.model.Food;
@@ -26,6 +27,7 @@ public class FoodServiceImpl implements FoodService {
     private final FoodRepository repository;
     private final ModelMapper modelMapper;
     private final BranchRepository branchRepository;
+    private final ExceptionUtil exceptionUtil;
 
 
 
@@ -44,8 +46,6 @@ public class FoodServiceImpl implements FoodService {
     }
 
     public void createFood(CreateFoodRequest createFoodRequest) {
-
-
         /*Food food=Food.builder()
                 .foodName(createFoodRequest.getFoodName())
                 .price(createFoodRequest.getPrice())
@@ -57,7 +57,7 @@ public class FoodServiceImpl implements FoodService {
 
         var branch=branchRepository.getById(createFoodRequest.getBranchId());
         if (branch == null) {
-            throw new BranchNotFoundException("Böyle bir şube yoktur");
+            throw exceptionUtil.buildException(Ex.NOT_FOUND_EXCEPTION);
         }
 
         Food food=Food.builder()

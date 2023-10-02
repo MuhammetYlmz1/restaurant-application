@@ -28,28 +28,13 @@ public class RestaurantServiceImpl implements RestaurantService {
     public RestaurantServiceImpl(RestaurantRepository restaurantRepository, ModelMapper modelMapper, ExceptionUtil exceptionUtil) {
 
         this.restaurantRepository = restaurantRepository;
-        //this.branchRepository = branchRepository;
+
         this.modelMapper = modelMapper;
 
         this.exceptionUtil = exceptionUtil;
     }
 
     public List<RestaurantDTO> getAllRestaurants(){
-
-
-      /*List<Restaurant> restaurants=restaurantRepository.findAll();
-        List<RestaurantDTO> restaurantDTOS=new ArrayList<>();
-        restaurants.forEach(restaurant ->{
-            RestaurantDTO restaurantDTO=new RestaurantDTO();
-            restaurantDTO.setRestaurantName(restaurant.getRestaurantName());
-            restaurantDTO.setAdress(restaurant.getAdress());
-            restaurantDTO.setBranchs(restaurant.getBranchs().stream().map(Branch::getAdress).collect(Collectors.toList()));
-            restaurantDTO.setPhone(restaurant.getPhone());
-            restaurantDTOS.add(restaurantDTO);
-        });*/
-
-
-
 
 
         return restaurantRepository.findAll().stream()

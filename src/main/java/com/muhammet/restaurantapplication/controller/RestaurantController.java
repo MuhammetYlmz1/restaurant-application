@@ -31,13 +31,15 @@ public class RestaurantController {
         var create= restaurantService.create(restaurantRequest);
         return ApiResponse.builder().data(create).build();
     }
+
+    @PutMapping
+    public ResponseEntity<RestaurantDTO> update(@Valid @RequestBody UpdateRestaurantRequest updateRestaurantRequest){
+        return ResponseEntity.ok(restaurantService.update(updateRestaurantRequest));
+    }
+
     @GetMapping("/getByRestaurantId/{id}")
     public ResponseEntity<RestaurantDTO> getByRestaurantId(@Valid @PathVariable("id") Long id){
         return ResponseEntity.ok( restaurantService.getRestaurantById(id));
-    }
-    @PutMapping
-    public ResponseEntity<RestaurantDTO> update(@Valid @RequestBody UpdateRestaurantRequest updateRestaurantRequest){
-       return ResponseEntity.ok(restaurantService.update(updateRestaurantRequest));
     }
     @GetMapping("/getByRestaurantName/{name}")
     public RestaurantDTO getByRestaurantName(@Valid @PathVariable("name") String name){

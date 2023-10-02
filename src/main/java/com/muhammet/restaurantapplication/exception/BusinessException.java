@@ -68,6 +68,7 @@ public class BusinessException extends RuntimeException {
                 "messages.error.category_already_exists_exception", HttpStatus.NOT_FOUND),
         TOKEN_IS_NOT_VALID_EXCEPTION(
                 "messages.error.token_is_not_valid_exception", HttpStatus.UNAUTHORIZED),
+        IMAGEDATA_ALREADY_EXISTS_EXCEPTION("message.error.imagedata_already_exists_exception",HttpStatus.NOT_FOUND)
         ;
 
         private final String message;
