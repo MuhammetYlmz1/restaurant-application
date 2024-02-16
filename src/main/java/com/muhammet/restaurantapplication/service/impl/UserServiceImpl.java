@@ -1,10 +1,10 @@
 package com.muhammet.restaurantapplication.service.impl;
 
-import com.muhammet.restaurantapplication.dto.UserDto;
-import com.muhammet.restaurantapplication.dto.requests.CreateUserRequest;
+import com.muhammet.restaurantapplication.model.dto.UserDto;
+import com.muhammet.restaurantapplication.model.requests.CreateUserRequest;
 import com.muhammet.restaurantapplication.exception.BusinessException.Ex;
 import com.muhammet.restaurantapplication.exception.ExceptionUtil;
-import com.muhammet.restaurantapplication.model.User;
+import com.muhammet.restaurantapplication.model.entity.User;
 import com.muhammet.restaurantapplication.repository.UserRepository;
 import com.muhammet.restaurantapplication.service.UserService;
 import lombok.AllArgsConstructor;
@@ -25,16 +25,17 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User create(User user) {
+    public UserDto create(CreateUserRequest user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(modelMapper.map(user,User.class));
 
-        return userRepository.save(user);
-
-       /* return UserDto.builder().username(save.getUserName())
-                .password(save.getPassword())
-                .email(save.getEmail())
-                .role(save.getRole()).build();*/
-
+        return UserDto.builder()
+                .username(user.getUserName())
+                .name(user.getName())
+                .password(user.getPassword())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .build();
     }
 
     @Override
@@ -44,8 +45,7 @@ public class UserServiceImpl implements UserService {
         return modelMapper.map(user,UserDto.class);
 
     }
-
-
+    
     @Override
     public User findUserByUserName(String username) {
         return userRepository.findByUserName(username)

@@ -1,7 +1,7 @@
 package com.muhammet.restaurantapplication.controller;
 
-import com.muhammet.restaurantapplication.dto.responses.ImageUploadResponse;
-import com.muhammet.restaurantapplication.model.ImageData;
+import com.muhammet.restaurantapplication.model.responses.ImageUploadResponse;
+import com.muhammet.restaurantapplication.model.entity.ImageData;
 import com.muhammet.restaurantapplication.service.ImageDataService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

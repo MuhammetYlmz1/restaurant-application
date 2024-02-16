@@ -1,12 +1,12 @@
 package com.muhammet.restaurantapplication.service.impl;
 
-import com.muhammet.restaurantapplication.dto.BranchDTO;
-import com.muhammet.restaurantapplication.dto.FoodDTO;
-import com.muhammet.restaurantapplication.dto.requests.CreateBranchRequest;
-import com.muhammet.restaurantapplication.dto.requests.UpdateBranchRequest;
+import com.muhammet.restaurantapplication.model.dto.BranchDTO;
+import com.muhammet.restaurantapplication.model.dto.FoodDTO;
+import com.muhammet.restaurantapplication.model.requests.CreateBranchRequest;
+import com.muhammet.restaurantapplication.model.requests.UpdateBranchRequest;
 import com.muhammet.restaurantapplication.exception.BranchNotFoundException;
 import com.muhammet.restaurantapplication.mapper.BranchMapper;
-import com.muhammet.restaurantapplication.model.Branch;
+import com.muhammet.restaurantapplication.model.entity.Branch;
 import com.muhammet.restaurantapplication.repository.BranchRepository;
 import com.muhammet.restaurantapplication.service.BranchService;
 import com.muhammet.restaurantapplication.service.FoodService;
@@ -54,27 +54,6 @@ public class BranchServiceImpl implements BranchService {
         return branchDtoList;
     }
 
-        /*foodDTOS.forEach(food -> {
-            var branchDto = branchMapping.get(food.getBranchId());
-            //branchDto.setMenu();
-
-        });*/
-
-       /* branches.stream().map(branch -> {
-            BranchDTO branchDTO=map.get(branch.getId());
-            branchDTO.setMenu(branch.getMenu());
-
-
-        });*/
-
-    /*List<BranchDTO> branchDTOs = branches.stream()
-            .map(branch -> {
-                BranchDTO branchDTO = branchMapper.map(branch);
-
-                branchDTO.setMenu(branchFoodDTOs);
-                return branchDTO;
-            })
-            .collect(Collectors.toList());*/
     public BranchDTO createBranch(CreateBranchRequest createBranchRequest){
 
 

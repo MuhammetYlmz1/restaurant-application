@@ -1,7 +1,7 @@
 package com.muhammet.restaurantapplication.mapper;
 
-import com.muhammet.restaurantapplication.dto.BranchDTO;
-import com.muhammet.restaurantapplication.model.Branch;
+import com.muhammet.restaurantapplication.model.dto.BranchDTO;
+import com.muhammet.restaurantapplication.model.entity.Branch;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

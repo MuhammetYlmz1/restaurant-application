@@ -1,6 +1,6 @@
 package com.muhammet.restaurantapplication.repository;
 
-import com.muhammet.restaurantapplication.model.ImageData;
+import com.muhammet.restaurantapplication.model.entity.ImageData;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

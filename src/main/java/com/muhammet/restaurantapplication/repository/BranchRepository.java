@@ -1,6 +1,6 @@
 package com.muhammet.restaurantapplication.repository;
 
-import com.muhammet.restaurantapplication.model.Branch;
+import com.muhammet.restaurantapplication.model.entity.Branch;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

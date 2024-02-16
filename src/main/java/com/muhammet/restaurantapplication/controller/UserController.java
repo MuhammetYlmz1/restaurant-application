@@ -1,8 +1,10 @@
 package com.muhammet.restaurantapplication.controller;
 
-import com.muhammet.restaurantapplication.dto.UserDto;
-import com.muhammet.restaurantapplication.model.User;
+import com.muhammet.restaurantapplication.model.dto.UserDto;
+import com.muhammet.restaurantapplication.model.requests.CreateUserRequest;
 import com.muhammet.restaurantapplication.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,9 +16,11 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-    @PostMapping
-    public User create(User user){
-        return userService.create(user);
+    @PostMapping("/save")
+    public ResponseEntity<UserDto> create(@RequestBody CreateUserRequest request){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(userService.create(request));
     }
     @GetMapping("/{name}")
     public UserDto getUserName(@PathVariable String name){

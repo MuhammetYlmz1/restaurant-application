@@ -1,13 +1,13 @@
 package com.muhammet.restaurantapplication.service.impl;
 
-import com.muhammet.restaurantapplication.dto.FoodDTO;
-import com.muhammet.restaurantapplication.dto.requests.CreateFoodRequest;
-import com.muhammet.restaurantapplication.dto.requests.UpdateFoodRequest;
+import com.muhammet.restaurantapplication.model.dto.FoodDTO;
+import com.muhammet.restaurantapplication.model.requests.CreateFoodRequest;
+import com.muhammet.restaurantapplication.model.requests.UpdateFoodRequest;
 import com.muhammet.restaurantapplication.exception.BusinessException.Ex;
 import com.muhammet.restaurantapplication.exception.ExceptionUtil;
 import com.muhammet.restaurantapplication.exception.FoodNotFoundException;
-import com.muhammet.restaurantapplication.model.Branch;
-import com.muhammet.restaurantapplication.model.Food;
+import com.muhammet.restaurantapplication.model.entity.Branch;
+import com.muhammet.restaurantapplication.model.entity.Food;
 import com.muhammet.restaurantapplication.repository.BranchRepository;
 import com.muhammet.restaurantapplication.repository.FoodRepository;
 import com.muhammet.restaurantapplication.service.FoodService;

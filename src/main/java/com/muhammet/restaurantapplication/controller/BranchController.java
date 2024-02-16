@@ -1,8 +1,8 @@
 package com.muhammet.restaurantapplication.controller;
 
-import com.muhammet.restaurantapplication.dto.BranchDTO;
-import com.muhammet.restaurantapplication.dto.requests.CreateBranchRequest;
-import com.muhammet.restaurantapplication.dto.requests.UpdateBranchRequest;
+import com.muhammet.restaurantapplication.model.dto.BranchDTO;
+import com.muhammet.restaurantapplication.model.requests.CreateBranchRequest;
+import com.muhammet.restaurantapplication.model.requests.UpdateBranchRequest;
 import com.muhammet.restaurantapplication.service.BranchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

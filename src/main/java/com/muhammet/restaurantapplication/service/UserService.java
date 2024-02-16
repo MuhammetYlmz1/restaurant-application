@@ -1,11 +1,12 @@
 package com.muhammet.restaurantapplication.service;
 
-import com.muhammet.restaurantapplication.dto.UserDto;
-import com.muhammet.restaurantapplication.model.User;
+import com.muhammet.restaurantapplication.model.dto.UserDto;
+import com.muhammet.restaurantapplication.model.requests.CreateUserRequest;
+import com.muhammet.restaurantapplication.model.entity.User;
 
 public interface UserService {
 
-    User create(User user);
+    UserDto create(CreateUserRequest request);
     UserDto getUser(String username);
     User findUserByUserName(String username);
 }

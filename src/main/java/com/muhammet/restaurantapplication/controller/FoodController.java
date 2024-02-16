@@ -1,8 +1,8 @@
 package com.muhammet.restaurantapplication.controller;
 
-import com.muhammet.restaurantapplication.dto.FoodDTO;
-import com.muhammet.restaurantapplication.dto.requests.CreateFoodRequest;
-import com.muhammet.restaurantapplication.dto.requests.UpdateFoodRequest;
+import com.muhammet.restaurantapplication.model.dto.FoodDTO;
+import com.muhammet.restaurantapplication.model.requests.CreateFoodRequest;
+import com.muhammet.restaurantapplication.model.requests.UpdateFoodRequest;
 import com.muhammet.restaurantapplication.service.FoodService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

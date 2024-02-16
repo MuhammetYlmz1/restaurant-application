@@ -1,8 +1,8 @@
 package com.muhammet.restaurantapplication.service;
 
-import com.muhammet.restaurantapplication.dto.FoodDTO;
-import com.muhammet.restaurantapplication.dto.requests.CreateFoodRequest;
-import com.muhammet.restaurantapplication.dto.requests.UpdateFoodRequest;
+import com.muhammet.restaurantapplication.model.dto.FoodDTO;
+import com.muhammet.restaurantapplication.model.requests.CreateFoodRequest;
+import com.muhammet.restaurantapplication.model.requests.UpdateFoodRequest;
 
 import java.util.Collection;
 import java.util.List;

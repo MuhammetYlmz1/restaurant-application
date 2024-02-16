@@ -1,6 +1,6 @@
 package com.muhammet.restaurantapplication.service.impl;
 
-import com.muhammet.restaurantapplication.model.User;
+import com.muhammet.restaurantapplication.model.entity.User;
 import com.muhammet.restaurantapplication.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

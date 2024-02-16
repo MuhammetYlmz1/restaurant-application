@@ -1,14 +1,14 @@
 package com.muhammet.restaurantapplication.service.impl;
 
-import com.muhammet.restaurantapplication.dto.RestaurantDTO;
-import com.muhammet.restaurantapplication.dto.requests.CreateRestaurantRequest;
-import com.muhammet.restaurantapplication.dto.requests.UpdateRestaurantRequest;
-import com.muhammet.restaurantapplication.dto.responses.GetAllBranchResponse;
+import com.muhammet.restaurantapplication.model.dto.RestaurantDTO;
+import com.muhammet.restaurantapplication.model.requests.CreateRestaurantRequest;
+import com.muhammet.restaurantapplication.model.requests.UpdateRestaurantRequest;
+import com.muhammet.restaurantapplication.model.responses.GetAllBranchResponse;
 import com.muhammet.restaurantapplication.exception.BusinessException.Ex;
 import com.muhammet.restaurantapplication.exception.ExceptionUtil;
 import com.muhammet.restaurantapplication.exception.RestaurantNotFoundException;
-import com.muhammet.restaurantapplication.model.Branch;
-import com.muhammet.restaurantapplication.model.Restaurant;
+import com.muhammet.restaurantapplication.model.entity.Branch;
+import com.muhammet.restaurantapplication.model.entity.Restaurant;
 import com.muhammet.restaurantapplication.repository.RestaurantRepository;
 import com.muhammet.restaurantapplication.service.RestaurantService;
 import lombok.extern.slf4j.Slf4j;
