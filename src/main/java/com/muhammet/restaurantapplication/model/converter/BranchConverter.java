@@ -1,7 +1,7 @@
 package com.muhammet.restaurantapplication.model.converter;
 
-import com.muhammet.restaurantapplication.model.dto.BranchDTO;
 import com.muhammet.restaurantapplication.model.entity.Branch;
+import com.muhammet.restaurantapplication.model.responses.GetBranchResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
@@ -14,8 +14,8 @@ public class BranchConverter {
         this.converter = converter;
     }
 
-    public BranchDTO convertToBranchDto(Branch branch){
-        return BranchDTO.builder()
+    public GetBranchResponse convertToBranchDto(Branch branch){
+        return GetBranchResponse.builder()
                 .id(branch.getId())
                 .district(branch.getDistrict())
                 .adress(branch.getAdress())

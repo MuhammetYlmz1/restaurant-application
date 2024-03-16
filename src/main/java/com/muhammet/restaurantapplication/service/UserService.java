@@ -9,4 +9,5 @@ public interface UserService {
     UserDto create(CreateUserRequest request);
     UserDto getUser(String username);
     User findUserByUserName(String username);
+    User findByUserId(Long id);
 }

@@ -1,6 +1,7 @@
 package com.muhammet.restaurantapplication.controller;
 
-import com.muhammet.restaurantapplication.model.dto.BranchDTO;
+import com.muhammet.restaurantapplication.model.responses.GetBranchResponse;
+import com.muhammet.restaurantapplication.model.entity.Branch;
 import com.muhammet.restaurantapplication.model.requests.CreateBranchRequest;
 import com.muhammet.restaurantapplication.model.requests.UpdateBranchRequest;
 import com.muhammet.restaurantapplication.service.BranchService;
@@ -18,16 +19,16 @@ public class BranchController {
     private final BranchService branchService;
 
     @GetMapping
-    public List<BranchDTO> getAll(){
+    public List<GetBranchResponse> getAll(){
         return branchService.getAllBranchs();
     }
 
     @PostMapping
-    public ResponseEntity<BranchDTO> create(@Valid @RequestBody CreateBranchRequest createBranchRequest){
+    public ResponseEntity<GetBranchResponse> create(@Valid @RequestBody CreateBranchRequest createBranchRequest){
         return ResponseEntity.ok(branchService.createBranch(createBranchRequest));
     }
     @PutMapping
-    public ResponseEntity<BranchDTO> update(@Valid @RequestBody UpdateBranchRequest updateBranchRequest){
+    public ResponseEntity<GetBranchResponse> update(@Valid @RequestBody UpdateBranchRequest updateBranchRequest){
         return ResponseEntity.ok(branchService.updateBranch(updateBranchRequest));
     }
     @DeleteMapping
@@ -36,12 +37,12 @@ public class BranchController {
     }
 
     @GetMapping("{id}")
-    public BranchDTO getById(@Valid @PathVariable Long id){
+    public Branch getById(@Valid @PathVariable Long id){
         return branchService.getById(id);
     }
 
     @GetMapping("/getByDistrict/{district}")
-    public ResponseEntity<List<BranchDTO>> getByDistrict(@PathVariable String district){
+    public ResponseEntity<List<GetBranchResponse>> getByDistrict(@PathVariable String district){
         return ResponseEntity.ok(branchService.getByDistrict(district));
     }
 

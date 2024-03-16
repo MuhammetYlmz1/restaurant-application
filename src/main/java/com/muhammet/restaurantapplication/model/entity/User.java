@@ -4,6 +4,7 @@ import com.muhammet.restaurantapplication.model.enums.UserRole;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,4 +38,6 @@ public class User extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Order> orders;
 }

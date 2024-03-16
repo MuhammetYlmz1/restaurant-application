@@ -1,6 +1,7 @@
 package com.muhammet.restaurantapplication.service.impl;
 
 import com.muhammet.restaurantapplication.model.dto.TokenResponseDto;
+import com.muhammet.restaurantapplication.model.entity.User;
 import com.muhammet.restaurantapplication.model.requests.LoginRequest;
 import com.muhammet.restaurantapplication.exception.GenericException;
 import com.muhammet.restaurantapplication.service.AuthService;
@@ -11,7 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +40,15 @@ public class AuthServiceImpl implements AuthService {
                     .httpStatus(HttpStatus.NOT_FOUND)
                     .errorMessage("User not found!!")
                     .build();
+        }
+    }
+
+    public Optional<User> getAuthenticatedUser() {
+        try {
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            return Optional.ofNullable(userService.findUserByUserName(username));
+        } catch (Exception e) {
+            return Optional.empty();
         }
     }
 }

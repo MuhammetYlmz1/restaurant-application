@@ -28,20 +28,13 @@ public class RestaurantServiceImpl implements RestaurantService {
     public RestaurantServiceImpl(RestaurantRepository restaurantRepository, ModelMapper modelMapper, ExceptionUtil exceptionUtil) {
 
         this.restaurantRepository = restaurantRepository;
-
         this.modelMapper = modelMapper;
-
         this.exceptionUtil = exceptionUtil;
     }
 
     public List<RestaurantDTO> getAllRestaurants(){
-
-
         return restaurantRepository.findAll().stream()
                 .map(restaurants->this.modelMapper.map(restaurants,RestaurantDTO.class)).collect(Collectors.toList());
-
-        /*return restaurantRepository.findAll().stream()
-                .map(x-> convertToRestaurantDto(x)).collect(Collectors.toList());*/
     }
 
     public RestaurantDTO create(CreateRestaurantRequest restaurantRequest) {
@@ -52,10 +45,8 @@ public class RestaurantServiceImpl implements RestaurantService {
         Restaurant restaurant=modelMapper.map(restaurantRequest,Restaurant.class);
         restaurantRepository.save(restaurant);
 
-        return convertToRestaurantDto(restaurant);
+        return modelMapper.map(restaurant,RestaurantDTO.class);
     }
-
-
 
     public RestaurantDTO update(UpdateRestaurantRequest updateRestaurantRequest){
         Restaurant updating=this.restaurantRepository.findById(updateRestaurantRequest.getId())
@@ -64,8 +55,6 @@ public class RestaurantServiceImpl implements RestaurantService {
         updating.setPhone(updateRestaurantRequest.getPhone());
         updating.setAdress(updateRestaurantRequest.getAdress());
         updating.setRestaurantName(updateRestaurantRequest.getRestaurantName());
-
-        //var restaurant=modelMapper.map(updating,Restaurant.class);
 
         Restaurant restaurant= restaurantRepository.save(updating);
         return convertToRestaurantDto(restaurant);
@@ -76,7 +65,6 @@ public class RestaurantServiceImpl implements RestaurantService {
         restaurantRepository.deleteById(id);
 
     }
-
 
     public RestaurantDTO getRestaurantById(Long id){
         var restaurant=restaurantRepository.findById(id)
@@ -94,17 +82,10 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public boolean existsByRestaurantName(String name) {
-        /*if (name.isEmpty()) {
-            return
-        }*/
-
         return restaurantRepository.existsByRestaurantName(name);
     }
 
-
-
-
-    public RestaurantDTO convertToRestaurantDto(Restaurant restaurant){
+    private RestaurantDTO convertToRestaurantDto(Restaurant restaurant){
         List<Branch> branchList = restaurant.getBranchs();
 
         List<GetAllBranchResponse> convertedBranchList = branchList.stream()
@@ -119,6 +100,5 @@ public class RestaurantServiceImpl implements RestaurantService {
                 .branchs(convertedBranchList)
                 .build();
     }
-
 
 }

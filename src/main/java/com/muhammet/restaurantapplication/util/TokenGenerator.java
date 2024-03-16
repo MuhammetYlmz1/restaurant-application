@@ -25,6 +25,7 @@ public class TokenGenerator {
 
     public String generateToken(Authentication authentication){
         String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+
         return JWT.create()
                 .withSubject(username)
                 .withExpiresAt(new Date(System.currentTimeMillis()
@@ -33,12 +34,10 @@ public class TokenGenerator {
                 .sign(Algorithm.HMAC256(KEY.getBytes()));
     }
 
-    //Verify etme
     public DecodedJWT verifyJWT(String token){
         Algorithm algorithm=Algorithm.HMAC256(KEY.getBytes());
         JWTVerifier verifier=JWT.require(algorithm)
                 .build();
-
         try {
             return verifier.verify(token);
         }

@@ -37,11 +37,12 @@ public class RestaurantController {
         return ResponseEntity.ok(restaurantService.update(updateRestaurantRequest));
     }
 
-    @GetMapping("/getByRestaurantId/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<RestaurantDTO> getByRestaurantId(@Valid @PathVariable("id") Long id){
         return ResponseEntity.ok( restaurantService.getRestaurantById(id));
     }
-    @GetMapping("/getByRestaurantName/{name}")
+
+    @GetMapping("/{name}")
     public RestaurantDTO getByRestaurantName(@Valid @PathVariable("name") String name){
         return restaurantService.findByRestaurantName(name);
     }

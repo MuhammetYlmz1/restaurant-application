@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -24,6 +25,7 @@ public class RestaurantDTO {
 
     private String adress;
 
-    private List<GetAllBranchResponse> branchs;
+    @Builder.Default
+    private List<GetAllBranchResponse> branchs = new ArrayList<>();
 
 }

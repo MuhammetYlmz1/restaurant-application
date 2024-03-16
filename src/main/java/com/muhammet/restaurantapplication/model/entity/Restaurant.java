@@ -1,5 +1,6 @@
 package com.muhammet.restaurantapplication.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.muhammet.restaurantapplication.validator.PhoneNumber;
 import lombok.*;
 
@@ -29,7 +30,7 @@ public class Restaurant extends BaseEntity{
     @Column(name="adress")
     private String adress;
 
-
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "restaurantId")
     private List<Branch> branchs;
 

@@ -1,6 +1,7 @@
 package com.muhammet.restaurantapplication.service;
 
 import com.muhammet.restaurantapplication.model.dto.FoodDTO;
+import com.muhammet.restaurantapplication.model.entity.Food;
 import com.muhammet.restaurantapplication.model.requests.CreateFoodRequest;
 import com.muhammet.restaurantapplication.model.requests.UpdateFoodRequest;
 
@@ -18,6 +19,7 @@ public interface FoodService {
      FoodDTO getFoodById(Long id);
 
      List<FoodDTO> getByBranchIdIn(Collection<Long> branchIds);
+     List<Food> findAllByIdIn(List<Long> ids);
 
 }
 

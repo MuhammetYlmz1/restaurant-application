@@ -29,10 +29,6 @@ public class FoodServiceImpl implements FoodService {
     private final BranchRepository branchRepository;
     private final ExceptionUtil exceptionUtil;
 
-
-
-
-
     public List<FoodDTO> getAllFoods() {
         List<Food> foods = repository.findAll();
 
@@ -67,15 +63,6 @@ public class FoodServiceImpl implements FoodService {
                 .build();
 
         repository.save(food);
-
-
-     /*   var saveFood=repository.save(food);
-        saveFood.setBranch(branch);
-        return saveFood;*/
-
-
-
-        //repository.save(food);
 
     }
     public void updateFood(UpdateFoodRequest updateFoodRequest){
@@ -121,6 +108,11 @@ public class FoodServiceImpl implements FoodService {
                 .map(food -> modelMapper.map(food,FoodDTO.class))
                 .collect(Collectors.toList());
 
+    }
+
+    @Override
+    public List<Food> findAllByIdIn(List<Long> ids) {
+        return repository.findAllByIdIn(ids);
     }
 
     private boolean isValid(CreateFoodRequest request){

@@ -12,16 +12,10 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @Builder
 public class CreateRestaurantRequest {
-
-
-    //private Long id;
     @NotBlank
     private String restaurantName;
     @NotBlank
     private String phone;
     @NotBlank
     private String adress;
-
-    //private List<Branch> branchs;
-
 }

@@ -52,6 +52,12 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(()->exceptionUtil.buildException(Ex.USER_NOT_FOUND_EXCEPTION));
     }
 
+    @Override
+    public User findByUserId(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> exceptionUtil.buildException(Ex.USER_NOT_FOUND_EXCEPTION));
+
+    }
 
     private User createUserDtoToUser(CreateUserRequest createUserRequest){
         return User.builder()

@@ -19,7 +19,6 @@ public class Branch extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @Column(name="adress")
     private String adress;
 
@@ -38,4 +37,7 @@ public class Branch extends BaseEntity{
 
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "branch")
     private List<Food> menu;
+
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "branch")
+    private List<Order> orders;
 }
