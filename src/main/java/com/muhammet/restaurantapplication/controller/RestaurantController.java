@@ -38,13 +38,13 @@ public class RestaurantController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RestaurantDTO> getByRestaurantId(@Valid @PathVariable("id") Long id){
-        return ResponseEntity.ok( restaurantService.getRestaurantById(id));
+    public ResponseEntity<RestaurantDTO> getByRestaurantId(@Valid @PathVariable Long id){
+        return ResponseEntity.ok(restaurantService.getRestaurantById(id));
     }
 
-    @GetMapping("/{name}")
-    public RestaurantDTO getByRestaurantName(@Valid @PathVariable("name") String name){
-        return restaurantService.findByRestaurantName(name);
+    @GetMapping("/name")
+    public RestaurantDTO getByRestaurantName(@Valid @RequestParam("name") String restaurantName){
+        return restaurantService.findByRestaurantName(restaurantName);
     }
 
 

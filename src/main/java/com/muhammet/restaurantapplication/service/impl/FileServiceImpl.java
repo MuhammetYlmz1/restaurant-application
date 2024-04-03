@@ -73,7 +73,7 @@ public class FileServiceImpl implements FileService {
             minioClient.putObject(PutObjectArgs.builder()
                             .bucket(bucketName)
                             .object(objectName)
-                            .contentType(file.getContentType())
+                            .contentType(file.getContentType()+".jpg")
                             .stream(file.getInputStream(), file.getSize(), -1)
                     .build());
         }

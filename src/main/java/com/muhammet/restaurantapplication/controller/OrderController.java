@@ -7,6 +7,8 @@ import com.muhammet.restaurantapplication.service.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RequestMapping("/api/order")
 @RestController
 public class OrderController {
@@ -26,5 +28,21 @@ public class OrderController {
     @GetMapping
     public ResponseEntity<ApiResponse<Object>> getAll(){
         return ApiResponse.builder().data(orderService.getAll()).build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<Object>> getOrderById(@Valid @PathVariable("id") Long id){
+        return ApiResponse.builder().data(orderService.getOrderById(id)).build();
+    }
+
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<ApiResponse<Object>> getOrderDetail(@Valid @PathVariable("id") Long id){
+        return ApiResponse.builder().data(orderService.getOrderDetaild(id)).build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Object>> cancelOrder(Long id){
+        orderService.cancelOrder(id);
+        return ApiResponse.builder().build();
     }
 }

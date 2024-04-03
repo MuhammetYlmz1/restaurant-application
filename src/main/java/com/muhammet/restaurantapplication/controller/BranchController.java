@@ -37,8 +37,8 @@ public class BranchController {
     }
 
     @GetMapping("{id}")
-    public Branch getById(@Valid @PathVariable Long id){
-        return branchService.getById(id);
+    public ResponseEntity<GetBranchResponse> getById(@Valid @PathVariable Long id){
+        return ResponseEntity.ok(branchService.getById(id));
     }
 
     @GetMapping("/getByDistrict/{district}")

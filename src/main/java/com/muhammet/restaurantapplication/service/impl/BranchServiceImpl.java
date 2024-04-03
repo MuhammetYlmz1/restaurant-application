@@ -1,13 +1,14 @@
 package com.muhammet.restaurantapplication.service.impl;
 
-import com.muhammet.restaurantapplication.exception.BranchNotFoundException;
+import com.muhammet.restaurantapplication.exception.BusinessException.Ex;
+import com.muhammet.restaurantapplication.exception.ExceptionUtil;
 import com.muhammet.restaurantapplication.mapper.BranchMapper;
 import com.muhammet.restaurantapplication.model.converter.RestaurantDtoToRestaurantConverter;
-import com.muhammet.restaurantapplication.model.responses.GetBranchResponse;
 import com.muhammet.restaurantapplication.model.dto.FoodDTO;
 import com.muhammet.restaurantapplication.model.entity.Branch;
 import com.muhammet.restaurantapplication.model.requests.CreateBranchRequest;
 import com.muhammet.restaurantapplication.model.requests.UpdateBranchRequest;
+import com.muhammet.restaurantapplication.model.responses.GetBranchResponse;
 import com.muhammet.restaurantapplication.repository.BranchRepository;
 import com.muhammet.restaurantapplication.service.BranchService;
 import com.muhammet.restaurantapplication.service.FoodService;
@@ -25,11 +26,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BranchServiceImpl implements BranchService {
     private final BranchRepository branchRepository;
-    private final ModelMapper modelMapper;
+    private final ExceptionUtil exceptionUtil;
     private final BranchMapper branchMapper;
     private final FoodService foodService;
     private final RestaurantService restaurantService;
     private final RestaurantDtoToRestaurantConverter restaurantDtoToRestaurantConverter;
+    private final ModelMapper modelMapper;
 
     public List<GetBranchResponse> getAllBranchs(){
         List<Branch> branches= branchRepository.findAll();
@@ -66,13 +68,13 @@ public class BranchServiceImpl implements BranchService {
     }
 
     public GetBranchResponse updateBranch(UpdateBranchRequest updateBranchRequest){
-        var branch= branchRepository.findById(updateBranchRequest.getId()).orElseThrow(() -> new BranchNotFoundException("branch not found"));
+        var getBranchResponse = getById(updateBranchRequest.getId());
 
-        branch.setAdress(updateBranchRequest.getAdress());
-        branch.setPhone(updateBranchRequest.getPhone());
-        branch.setDistrict(updateBranchRequest.getDistrict());
+        getBranchResponse.setAdress(updateBranchRequest.getAdress());
+        getBranchResponse.setPhone(updateBranchRequest.getPhone());
+        getBranchResponse.setDistrict(updateBranchRequest.getDistrict());
 
-        Branch updatedBranch = branchRepository.save(branch);
+        Branch updatedBranch = branchRepository.save(modelMapper.map(getBranchResponse, Branch.class));
 
         return branchMapper.map(updatedBranch);
 
@@ -82,10 +84,13 @@ public class BranchServiceImpl implements BranchService {
         branchRepository.deleteById(id);
     }
 
-    public Branch getById(Long id){
+    public GetBranchResponse getById(Long id){
 
-        return branchRepository.findById(id)
-                .orElseThrow(()->new BranchNotFoundException("Böyle bir Branch Id yok"));
+        Branch branch = branchRepository.findById(id)
+                .orElseThrow(()-> exceptionUtil.buildException(Ex.BRANCH_NOT_FOUND_EXCEPTION));
+
+
+        return modelMapper.map(branch, GetBranchResponse.class);
 
     }
 

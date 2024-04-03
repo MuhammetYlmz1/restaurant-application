@@ -45,9 +45,6 @@ public class Order extends BaseEntity{
     @Column
     private Double totalPrice;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "order_foods",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "food_id"))
-    private List<Food> foods;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderFood> orderFoods;
 }

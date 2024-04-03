@@ -1,4 +1,4 @@
-package com.muhammet.restaurantapplication.config;
+package com.muhammet.restaurantapplication.comp.config;
 
 import io.minio.MinioClient;
 import org.springframework.beans.factory.annotation.Value;

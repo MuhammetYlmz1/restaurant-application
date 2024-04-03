@@ -1,4 +1,4 @@
-package com.muhammet.restaurantapplication.config;
+package com.muhammet.restaurantapplication.comp.config;
 
 
 import com.muhammet.restaurantapplication.security.JwtAccessDeniedHandler;
@@ -56,7 +56,7 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer(){
         return (web -> web
                 .ignoring()
-                .antMatchers("/api/**",
+                .antMatchers(
                         "/api/public",
                         "/api/auth/login",
                         "/swagger-ui.html/**",

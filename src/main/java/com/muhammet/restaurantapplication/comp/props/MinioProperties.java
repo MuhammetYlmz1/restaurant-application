@@ -1,4 +1,4 @@
-package com.muhammet.restaurantapplication.config.props;
+package com.muhammet.restaurantapplication.comp.props;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;

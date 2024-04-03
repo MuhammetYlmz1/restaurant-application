@@ -1,22 +1,14 @@
 package com.muhammet.restaurantapplication.controller;
 
-import com.muhammet.restaurantapplication.model.responses.ImageUploadResponse;
-import com.muhammet.restaurantapplication.model.entity.ImageData;
-import com.muhammet.restaurantapplication.service.ImageDataService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/image")
 public class ImageDataController {
 
 
-    public ImageDataController(ImageDataService imageDataService) {
+    /*public ImageDataController(ImageDataService imageDataService) {
         this.imageDataService = imageDataService;
     }
 
@@ -46,6 +38,6 @@ public class ImageDataController {
                 .contentType(MediaType.valueOf("image/png"))
                 .body(image);
     }
-
+*/
 
 }

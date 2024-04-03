@@ -6,7 +6,6 @@ import com.muhammet.restaurantapplication.model.requests.UpdateRestaurantRequest
 import com.muhammet.restaurantapplication.model.responses.GetAllBranchResponse;
 import com.muhammet.restaurantapplication.exception.BusinessException.Ex;
 import com.muhammet.restaurantapplication.exception.ExceptionUtil;
-import com.muhammet.restaurantapplication.exception.RestaurantNotFoundException;
 import com.muhammet.restaurantapplication.model.entity.Branch;
 import com.muhammet.restaurantapplication.model.entity.Restaurant;
 import com.muhammet.restaurantapplication.repository.RestaurantRepository;
@@ -50,7 +49,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     public RestaurantDTO update(UpdateRestaurantRequest updateRestaurantRequest){
         Restaurant updating=this.restaurantRepository.findById(updateRestaurantRequest.getId())
-                .orElseThrow(()->new RestaurantNotFoundException("Böyle bir restorant bulunmamaktadır."));
+                .orElseThrow(()->exceptionUtil.buildException(Ex.RESTAURANT_NOT_FOUND_EXCEPTION));
 
         updating.setPhone(updateRestaurantRequest.getPhone());
         updating.setAdress(updateRestaurantRequest.getAdress());

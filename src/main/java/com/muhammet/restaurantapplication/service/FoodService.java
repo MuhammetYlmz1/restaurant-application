@@ -20,6 +20,7 @@ public interface FoodService {
 
      List<FoodDTO> getByBranchIdIn(Collection<Long> branchIds);
      List<Food> findAllByIdIn(List<Long> ids);
+     Food findById(Long id);
 
 }
 

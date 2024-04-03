@@ -1,4 +1,4 @@
-package com.muhammet.restaurantapplication.config;
+package com.muhammet.restaurantapplication.comp.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

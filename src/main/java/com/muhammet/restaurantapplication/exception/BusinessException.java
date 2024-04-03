@@ -47,6 +47,9 @@ public class BusinessException extends RuntimeException {
         RESTAURANT_NOT_FOUND_EXCEPTION(
                 "messages.error.restaurant_not_found_exception", HttpStatus.NOT_FOUND),
 
+        BRANCH_NOT_FOUND_EXCEPTION(
+          "messages.error.branch_not_found_exception", HttpStatus.NOT_FOUND
+        ),
 
         /** Menu not found exception ex. */
         MENU_NOT_FOUND_EXCEPTION("messages.error.menu_not_found_exception", HttpStatus.NOT_FOUND),
@@ -68,8 +71,10 @@ public class BusinessException extends RuntimeException {
                 "messages.error.category_already_exists_exception", HttpStatus.NOT_FOUND),
         TOKEN_IS_NOT_VALID_EXCEPTION(
                 "messages.error.token_is_not_valid_exception", HttpStatus.UNAUTHORIZED),
-        IMAGEDATA_ALREADY_EXISTS_EXCEPTION("message.error.imagedata_already_exists_exception",HttpStatus.NOT_FOUND)
-        ;
+        IMAGEDATA_ALREADY_EXISTS_EXCEPTION("message.error.imagedata_already_exists_exception",HttpStatus.NOT_FOUND),
+        WRONG_CREDENTIALS_EXCEPTION("messages.error.wrong_credentials_exception", HttpStatus.FORBIDDEN),
+
+        ORDER_NOT_FOUND("messages.error.order_not_found", HttpStatus.NOT_FOUND);
 
         private final String message;
         private final HttpStatus status;

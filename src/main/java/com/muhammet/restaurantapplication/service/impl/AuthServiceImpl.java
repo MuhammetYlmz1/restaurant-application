@@ -1,20 +1,22 @@
 package com.muhammet.restaurantapplication.service.impl;
 
+import com.muhammet.restaurantapplication.comp.jwt.constants.TokenClaims;
+import com.muhammet.restaurantapplication.comp.jwt.constants.TokenTypes;
+import com.muhammet.restaurantapplication.exception.BusinessException.Ex;
+import com.muhammet.restaurantapplication.exception.ExceptionUtil;
 import com.muhammet.restaurantapplication.model.dto.TokenResponseDto;
+import com.muhammet.restaurantapplication.model.dto.UserDto;
 import com.muhammet.restaurantapplication.model.entity.User;
 import com.muhammet.restaurantapplication.model.requests.LoginRequest;
-import com.muhammet.restaurantapplication.exception.GenericException;
 import com.muhammet.restaurantapplication.service.AuthService;
+import com.muhammet.restaurantapplication.service.TokenService;
 import com.muhammet.restaurantapplication.service.UserService;
-import com.muhammet.restaurantapplication.util.TokenGenerator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -22,24 +24,23 @@ import java.util.Optional;
 public class AuthServiceImpl implements AuthService {
 
     private final UserService userService;
-    private final TokenGenerator tokenGenerator;
-    private final AuthenticationManager authenticationManager;
+    private final TokenService tokenService;
+    private final ExceptionUtil exceptionUtil;
 
     @Override
     public TokenResponseDto login(LoginRequest loginRequest) {
-        try {
-            Authentication authentication= authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUserName(),loginRequest.getPassword()));
-            return TokenResponseDto.builder()
-                    .accessToken(tokenGenerator.generateToken(authentication))
-                    .userDto(userService.getUser(loginRequest.getUserName()))
+        UserDto userDto = userService.getUser(loginRequest.getUserName());
 
+        Map<String, Object> accessTokenClaims = generateAccessTokenClaims(userDto);
+
+        String accessToken = tokenService.token(accessTokenClaims, userDto.getId().toString());
+        try {
+            return TokenResponseDto.builder()
+                    .accessToken(accessToken)
+                    .userDto(userDto)
                     .build();
         }catch (Exception e){
-            throw  GenericException.builder()
-                    .httpStatus(HttpStatus.NOT_FOUND)
-                    .errorMessage("User not found!!")
-                    .build();
+            throw  exceptionUtil.buildException(Ex.WRONG_CREDENTIALS_EXCEPTION);
         }
     }
 
@@ -50,5 +51,16 @@ public class AuthServiceImpl implements AuthService {
         } catch (Exception e) {
             return Optional.empty();
         }
+    }
+
+    private Map<String, Object> generateAccessTokenClaims(UserDto userDto){
+        Map<String, Object> claims = new HashMap<>();
+
+        claims.put(TokenClaims.NAME.getValue(), userDto.getName());
+        claims.put(TokenClaims.EMAIL.getValue(), userDto.getEmail());
+        claims.put(TokenClaims.TYPE.getValue(), TokenTypes.BEARER);
+        claims.put(TokenClaims.USERNAME.getValue(), userDto.getUsername());
+
+        return claims;
     }
 }
