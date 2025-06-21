@@ -1,7 +1,7 @@
 package com.muhammet.restaurantapplication.controller;
 
 import com.muhammet.restaurantapplication.model.dto.UserDto;
-import com.muhammet.restaurantapplication.model.requests.CreateUserRequest;
+import com.muhammet.restaurantapplication.model.request.CreateUserRequest;
 import com.muhammet.restaurantapplication.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

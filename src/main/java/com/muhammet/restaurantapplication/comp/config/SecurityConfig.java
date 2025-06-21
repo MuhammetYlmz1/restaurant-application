@@ -1,12 +1,13 @@
 package com.muhammet.restaurantapplication.comp.config;
 
 
-import com.muhammet.restaurantapplication.security.JwtAccessDeniedHandler;
-import com.muhammet.restaurantapplication.security.JwtAuthenticationEntryPoint;
-import com.muhammet.restaurantapplication.security.JwtFilter;
+import com.muhammet.restaurantapplication.comp.security.JwtAccessDeniedHandler;
+import com.muhammet.restaurantapplication.comp.security.JwtAuthenticationEntryPoint;
+import com.muhammet.restaurantapplication.comp.security.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -42,6 +43,7 @@ public class SecurityConfig {
                 .authorizeRequests((auth)->{
                     auth.antMatchers("/api/admin").hasAuthority("ADMIN");
                     auth.antMatchers("/api/user").hasAnyAuthority("ADMIN","USER");
+                    auth.antMatchers(HttpMethod.POST, "/api/user/save").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .formLogin().disable()

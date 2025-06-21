@@ -4,10 +4,10 @@ import com.muhammet.restaurantapplication.comp.jwt.constants.TokenClaims;
 import com.muhammet.restaurantapplication.comp.jwt.constants.TokenTypes;
 import com.muhammet.restaurantapplication.exception.BusinessException.Ex;
 import com.muhammet.restaurantapplication.exception.ExceptionUtil;
-import com.muhammet.restaurantapplication.model.dto.TokenResponseDto;
+import com.muhammet.restaurantapplication.model.response.TokenResponse;
 import com.muhammet.restaurantapplication.model.dto.UserDto;
 import com.muhammet.restaurantapplication.model.entity.User;
-import com.muhammet.restaurantapplication.model.requests.LoginRequest;
+import com.muhammet.restaurantapplication.model.request.LoginRequest;
 import com.muhammet.restaurantapplication.service.AuthService;
 import com.muhammet.restaurantapplication.service.TokenService;
 import com.muhammet.restaurantapplication.service.UserService;
@@ -28,16 +28,15 @@ public class AuthServiceImpl implements AuthService {
     private final ExceptionUtil exceptionUtil;
 
     @Override
-    public TokenResponseDto login(LoginRequest loginRequest) {
+    public TokenResponse login(LoginRequest loginRequest) {
         UserDto userDto = userService.getUser(loginRequest.getUserName());
 
         Map<String, Object> accessTokenClaims = generateAccessTokenClaims(userDto);
 
         String accessToken = tokenService.token(accessTokenClaims, userDto.getId().toString());
         try {
-            return TokenResponseDto.builder()
+            return TokenResponse.builder()
                     .accessToken(accessToken)
-                    .userDto(userDto)
                     .build();
         }catch (Exception e){
             throw  exceptionUtil.buildException(Ex.WRONG_CREDENTIALS_EXCEPTION);

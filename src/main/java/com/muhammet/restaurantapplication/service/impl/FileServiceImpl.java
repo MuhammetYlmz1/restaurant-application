@@ -2,8 +2,8 @@ package com.muhammet.restaurantapplication.service.impl;
 
 import com.muhammet.restaurantapplication.delegate.minio.service.MinioDelegateService;
 import com.muhammet.restaurantapplication.model.dto.FileStorageDto;
-import com.muhammet.restaurantapplication.model.requests.UploadFileStorageRequest;
-import com.muhammet.restaurantapplication.model.responses.UploadResponse;
+import com.muhammet.restaurantapplication.model.request.UploadFileStorageRequest;
+import com.muhammet.restaurantapplication.model.response.UploadResponse;
 import com.muhammet.restaurantapplication.model.entity.FileStorage;
 import com.muhammet.restaurantapplication.repository.FileStorageRepository;
 import com.muhammet.restaurantapplication.service.FileService;
@@ -73,7 +73,7 @@ public class FileServiceImpl implements FileService {
             minioClient.putObject(PutObjectArgs.builder()
                             .bucket(bucketName)
                             .object(objectName)
-                            .contentType(file.getContentType()+".jpg")
+                            .contentType(file.getContentType())
                             .stream(file.getInputStream(), file.getSize(), -1)
                     .build());
         }

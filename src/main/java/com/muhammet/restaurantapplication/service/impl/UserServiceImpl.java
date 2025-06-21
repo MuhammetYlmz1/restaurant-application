@@ -1,28 +1,28 @@
 package com.muhammet.restaurantapplication.service.impl;
 
-import com.muhammet.restaurantapplication.model.dto.UserDto;
-import com.muhammet.restaurantapplication.model.requests.CreateUserRequest;
 import com.muhammet.restaurantapplication.exception.BusinessException.Ex;
 import com.muhammet.restaurantapplication.exception.ExceptionUtil;
+import com.muhammet.restaurantapplication.model.converter.UserEntityToUserDtoConverter;
+import com.muhammet.restaurantapplication.model.dto.UserDto;
 import com.muhammet.restaurantapplication.model.entity.User;
+import com.muhammet.restaurantapplication.model.request.CreateUserRequest;
 import com.muhammet.restaurantapplication.repository.UserRepository;
 import com.muhammet.restaurantapplication.service.UserService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserEntityToUserDtoConverter entityToUserDtoConverter;
 
     private final ModelMapper modelMapper;
     private final ExceptionUtil exceptionUtil;
-
-
 
     @Override
     public UserDto create(CreateUserRequest user) {
@@ -53,9 +53,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByUserId(Long id) {
-        return userRepository.findById(id)
+    public UserDto findByUserId(Long id) {
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> exceptionUtil.buildException(Ex.USER_NOT_FOUND_EXCEPTION));
+
+        return entityToUserDtoConverter.map(user);
 
     }
 

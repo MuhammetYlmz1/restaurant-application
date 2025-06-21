@@ -2,8 +2,8 @@ package com.muhammet.restaurantapplication.service;
 
 import com.muhammet.restaurantapplication.model.dto.FoodDTO;
 import com.muhammet.restaurantapplication.model.entity.Food;
-import com.muhammet.restaurantapplication.model.requests.CreateFoodRequest;
-import com.muhammet.restaurantapplication.model.requests.UpdateFoodRequest;
+import com.muhammet.restaurantapplication.model.request.CreateFoodRequest;
+import com.muhammet.restaurantapplication.model.request.UpdateFoodRequest;
 
 import java.util.Collection;
 import java.util.List;
@@ -20,7 +20,7 @@ public interface FoodService {
 
      List<FoodDTO> getByBranchIdIn(Collection<Long> branchIds);
      List<Food> findAllByIdIn(List<Long> ids);
-     Food findById(Long id);
+     FoodDTO findById(Long id);
 
 }
 

@@ -1,9 +1,11 @@
 package com.muhammet.restaurantapplication.model.entity;
 
 
+import com.muhammet.restaurantapplication.model.enums.OrderStatus;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -43,7 +45,11 @@ public class Order extends BaseEntity{
     private Integer totalProduct;
 
     @Column
-    private Double totalPrice;
+    private BigDecimal totalPrice;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderFood> orderFoods;

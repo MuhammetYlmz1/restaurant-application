@@ -1,6 +1,6 @@
 package com.muhammet.restaurantapplication.service.impl;
 
-import com.muhammet.restaurantapplication.model.responses.ImageUploadResponse;
+import com.muhammet.restaurantapplication.model.response.ImageUploadResponse;
 import com.muhammet.restaurantapplication.exception.BusinessException.Ex;
 import com.muhammet.restaurantapplication.exception.ExceptionUtil;
 import com.muhammet.restaurantapplication.model.entity.ImageData;

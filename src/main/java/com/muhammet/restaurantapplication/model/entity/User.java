@@ -38,6 +38,9 @@ public class User extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    private List<RestaurantReview> reviews;
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     private List<Order> orders;
 }

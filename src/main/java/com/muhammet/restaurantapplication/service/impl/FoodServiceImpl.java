@@ -2,11 +2,12 @@ package com.muhammet.restaurantapplication.service.impl;
 
 import com.muhammet.restaurantapplication.exception.BusinessException.Ex;
 import com.muhammet.restaurantapplication.exception.ExceptionUtil;
+import com.muhammet.restaurantapplication.model.dto.BranchDto;
 import com.muhammet.restaurantapplication.model.dto.FoodDTO;
 import com.muhammet.restaurantapplication.model.entity.Branch;
 import com.muhammet.restaurantapplication.model.entity.Food;
-import com.muhammet.restaurantapplication.model.requests.CreateFoodRequest;
-import com.muhammet.restaurantapplication.model.requests.UpdateFoodRequest;
+import com.muhammet.restaurantapplication.model.request.CreateFoodRequest;
+import com.muhammet.restaurantapplication.model.request.UpdateFoodRequest;
 import com.muhammet.restaurantapplication.repository.BranchRepository;
 import com.muhammet.restaurantapplication.repository.FoodRepository;
 import com.muhammet.restaurantapplication.service.FoodService;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -33,7 +36,7 @@ public class FoodServiceImpl implements FoodService {
 
         var getAllFoodsResponses=foods.
                 stream()
-                .map(food -> this.modelMapper.map(food, FoodDTO.class))
+                .map(this::foodDtoConverter)
                 .collect(Collectors.toList());
 
 
@@ -115,16 +118,55 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
-    public Food findById(Long id) {
-        return repository.findById(id).get();
+    public FoodDTO findById(Long id) {
+        Optional<Food> food = repository.findById(id);
+        if (Objects.isNull(food)){
+            throw exceptionUtil.buildException(Ex.FOOD_NOT_FOUND_EXCEPTION);
+        }
+
+        return convertToFoodDTO(food.get());
     }
 
-    private boolean isValid(CreateFoodRequest request){
+    /*private boolean isValid(CreateFoodRequest request){
         if (!request.getFoodName().isBlank() &&
             request.getPrice() != null && request.getPrice()>0){
             return true;
         }
         return false;
+
+    }*/
+
+    private FoodDTO convertToFoodDTO(Food food){
+        return FoodDTO.builder()
+                .id(food.getId())
+                .foodName(food.getFoodName())
+                .price(food.getPrice())
+                .branchDto(BranchDto
+                        .builder()
+                        .phone(food.getBranch().getPhone())
+                        .district(food.getBranch().getDistrict())
+                        .restaurantName(food.getBranch().getRestaurantId().getRestaurantName())
+                        .adress(food.getBranch().getAdress())
+                        .build())
+                .build();
+    }
+
+    private FoodDTO foodDtoConverter(Food food){
+        return FoodDTO.builder()
+                .branchDto(convertBrancDto(food.getBranch()))
+                .price(food.getPrice())
+                .foodName(food.getFoodName())
+                .id(food.getId())
+                .build();
+    }
+
+    private BranchDto convertBrancDto(Branch branch) {
+        return BranchDto.builder()
+                .district(branch.getDistrict())
+                .restaurantName(branch.getRestaurantId().getRestaurantName())
+                .adress(branch.getAdress())
+                .phone(branch.getPhone())
+                .build();
 
     }
 

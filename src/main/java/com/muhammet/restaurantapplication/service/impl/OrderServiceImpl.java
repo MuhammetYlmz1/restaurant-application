@@ -1,16 +1,18 @@
 package com.muhammet.restaurantapplication.service.impl;
 
+import com.muhammet.restaurantapplication.comp.config.kafka.producer.OrderProducer;
 import com.muhammet.restaurantapplication.exception.BusinessException.Ex;
 import com.muhammet.restaurantapplication.exception.ExceptionUtil;
 import com.muhammet.restaurantapplication.model.converter.GetBranchResponseConverterToBranch;
 import com.muhammet.restaurantapplication.model.converter.OrderToGetOrderResponseConverter;
-import com.muhammet.restaurantapplication.model.dto.OrderFoodDto;
+import com.muhammet.restaurantapplication.model.dto.*;
 import com.muhammet.restaurantapplication.model.entity.*;
-import com.muhammet.restaurantapplication.model.requests.CreateOrderRequest;
-import com.muhammet.restaurantapplication.model.responses.CreateOrderResponse;
-import com.muhammet.restaurantapplication.model.responses.GetBranchResponse;
-import com.muhammet.restaurantapplication.model.responses.GetOrderDetailResponse;
-import com.muhammet.restaurantapplication.model.responses.GetOrderResponse;
+import com.muhammet.restaurantapplication.model.enums.OrderStatus;
+import com.muhammet.restaurantapplication.model.request.CreateOrderRequest;
+import com.muhammet.restaurantapplication.model.response.CreateOrderResponse;
+import com.muhammet.restaurantapplication.model.response.GetBranchResponse;
+import com.muhammet.restaurantapplication.model.response.GetOrderDetailResponse;
+import com.muhammet.restaurantapplication.model.response.GetOrderResponse;
 import com.muhammet.restaurantapplication.repository.OrderRepository;
 import com.muhammet.restaurantapplication.service.*;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +21,12 @@ import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -35,6 +40,8 @@ public class OrderServiceImpl implements OrderService {
     private final FoodService foodService;
     private final ModelMapper modelMapper;
     private final ExceptionUtil exceptionUtil;
+    private final EmailService emailService;
+    private final OrderProducer orderProducer;
     private final GetBranchResponseConverterToBranch getBranchResponseConverterToBranch;
     private final OrderToGetOrderResponseConverter orderToGetOrderResponseConverter;
 
@@ -88,60 +95,152 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void cancelOrder(Long id) {
+    public Boolean cancelOrder(Long id) {
         Optional<Order> order = orderRepository.findById(id);
         if (order.isEmpty()){
             throw exceptionUtil.buildException(Ex.ORDER_NOT_FOUND);
         }
-        orderRepository.delete(order.get());
+        Order existingOrder = order.get();
+        existingOrder.setStatus(OrderStatus.CANCELED);
+        orderRepository.save(order.get());
+        return true;
+    }
+
+    @Override
+    public Boolean completeOrder(Long id) {
+        Optional<Order> order = orderRepository.findById(id);
+        if (order.isEmpty()){
+            throw exceptionUtil.buildException(Ex.ORDER_NOT_FOUND);
+        }
+        Order existingOrder = order.get();
+        existingOrder.setStatus(OrderStatus.ACCEPTED);
+        orderRepository.save(existingOrder);
+        return true;
     }
 
     @Override
     public CreateOrderResponse create(CreateOrderRequest request) {
-        User user = userService.findByUserId(request.getUserId());
+        UserDto userDto = userService.findByUserId(request.getUserId());
+
+        if (Objects.isNull(userDto)){
+            throw exceptionUtil.buildException(Ex.USER_NOT_FOUND_EXCEPTION);
+        }
+
         GetBranchResponse getBranchResponse = branchService.getById(request.getBranchId());
-        Branch branch = modelMapper.map(getBranchResponse, Branch.class);
+        if (Objects.isNull(getBranchResponse)){
+            throw exceptionUtil.buildException(Ex.BRANCH_NOT_FOUND_EXCEPTION);
+        }
 
-        Order order = requestToOrder(request,user,branch);
+        BranchDto branchDto = modelMapper.map(getBranchResponse, BranchDto.class);
+        OrderDto orderDto = requestToOrder(request,userDto,branchDto);
+        Order order = getOrderWithFoods(request, orderDto);
 
-        Order orderFoods = getOrderFoods(request, order);
-
-        Order savedOrder = orderRepository.save(orderFoods);
-
+        Order savedOrder = orderRepository.save(order);
+        sendOrderCreatedEvent(orderDto);
+        //emailService.sendSimpleMessage(userDto.getEmail(), "","Siparişiniz oluşturuldu");
         return convertToResponse(savedOrder);
     }
 
-    @NotNull
-    private Order getOrderFoods(CreateOrderRequest request, Order order) {
-        List<OrderFood> orderFoods = new ArrayList<>();
-        for (Long foodId : request.getFoods()) {
-            fillOrderFood(order, foodId, orderFoods);
-        }
+    private void sendOrderCreatedEvent(OrderDto orderDto){
+        orderProducer.sendOrderCreatedMail(orderDto);
+    }
 
-        order.setOrderFoods(orderFoods);
-        order.setTotalProduct(orderFoods.size());
-        order.setTotalPrice(orderFoods.stream().mapToDouble(f -> f.getFood().getPrice()).sum());
+    @NotNull
+    private Order getOrderWithFoods(CreateOrderRequest request, OrderDto orderDto) {
+        List<OrderFoodDto> orderFoods = new ArrayList<>();
+
+        // Her bir yemek ID'sine göre fiyat bilgilerini doldurma
+        request.getFoods().forEach(foodId -> fillOrderFood(orderDto, foodId, orderFoods));
+
+        // Toplam ürün sayısı ve fiyat hesaplama
+        orderDto.setTotalProduct(orderFoods.size());
+
+        BigDecimal totalPrice = orderFoods.stream()
+                .map(orderFood -> orderFood.getFood().getPrice()) // Yemeklerin fiyatlarını al
+                .reduce(BigDecimal.ZERO, BigDecimal::add); // Toplam fiyatı hesapla
+
+        // Toplam fiyatı OrderDto'ya set etme
+        orderDto.setTotalPrice(totalPrice);
+
+        // Önce Order nesnesini oluştur
+        Order order = Order.builder()
+                .user(modelMapper.map(orderDto.getUserDto(), User.class))  // UserDto'yu User'a dönüştür
+                .branch(modelMapper.map(orderDto.getBranchDto(), Branch.class))  // BranchDto'yu Branch'a dönüştür
+                .name(orderDto.getName())
+                .surname(orderDto.getSurname())
+                .phone(orderDto.getPhone())
+                .note(orderDto.getNote())
+                .totalProduct(orderDto.getTotalProduct())
+                .totalPrice(orderDto.getTotalPrice())
+                .status(orderDto.getStatus())
+                .build();
+
+        // Şimdi orderFood nesnelerine order referansını set et
+        List<OrderFood> orderFoodEntities = orderFoods.stream()
+                .map(orderFoodDto -> {
+                    OrderFood orderFood = new OrderFood();
+                    orderFood.setFood(modelMapper.map(orderFoodDto.getFood(), Food.class));  // FoodDTO'yu Food'a dönüştür
+                    orderFood.setOrder(order);  // Bu satırda artık order nesnesi set ediliyor
+                    return orderFood;
+                })
+                .collect(Collectors.toList());
+
+        // Order nesnesine orderFood listesini ekle
+        order.setOrderFoods(orderFoodEntities);
+
         return order;
     }
 
-    private void fillOrderFood(Order order, Long foodId, List<OrderFood> orderFoods) {
-        Food food = foodService.findById(foodId);
-        OrderFood orderFood = new OrderFood();
-        orderFood.setOrder(order);
+
+    private void fillOrderFood(OrderDto orderDto, Long foodId, List<OrderFoodDto> orderFoods) {
+        FoodDTO food = foodService.findById(foodId);
+        OrderFoodDto orderFood = new OrderFoodDto();
+        orderFood.setOrderDto(orderDto);
         orderFood.setFood(food);
         orderFoods.add(orderFood);
     }
 
-    private Order requestToOrder(CreateOrderRequest createOrderRequest, User user, Branch branch){
-        return Order.builder()
-                .user(user)
+    private OrderDto requestToOrder(CreateOrderRequest createOrderRequest, UserDto userDto, BranchDto branch){
+        return OrderDto.builder()
+                .userDto(userDto)
                 .name(createOrderRequest.getName())
                 .surname(createOrderRequest.getSurname())
                 .phone(createOrderRequest.getPhone())
-                .branch(branch)
+                .branchDto(branch)
                 .note(createOrderRequest.getNote())
+                .status(OrderStatus.PENDING)
                 .build();
     }
+
+    /*private Order convertToOrder(OrderDto orderDto) {
+        return Order.builder()
+                .id(orderDto.getId())
+                .user(User.builder()
+                        .id(orderDto.getUserDto().getId())
+                        .name(orderDto.getUserDto().getName())
+                        .surname(orderDto.getUserDto().getSurname())
+                        .build())
+                .branch(Branch.builder()
+                        .id(orderDto.getBranchDto().getId())
+                        .name(orderDto.getBranchDto().getName())
+                        .build())
+                .note(orderDto.getNote())
+                .name(orderDto.getName())
+                .surname(orderDto.getSurname())
+                .phone(orderDto.getPhone())
+                .totalProduct(orderDto.getTotalProduct())
+                .totalPrice(orderDto.getTotalPrice())
+                .status(orderDto.getStatus())
+                .orderFoods(orderDto.getFoodDTO().stream().map(foodDto -> OrderFood.builder()
+                        .food(Food.builder()
+                                .id(foodDto.getId())
+                                .foodName(foodDto.getFoodName())
+                                .price(foodDto.getPrice())
+                                .build())
+                        .build()).collect(Collectors.toList()))
+                .build();
+    }*/
+
 
     private CreateOrderResponse convertToResponse(Order order){
         return CreateOrderResponse.builder()

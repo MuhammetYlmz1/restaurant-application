@@ -1,8 +1,8 @@
 package com.muhammet.restaurantapplication.service;
 
-import com.muhammet.restaurantapplication.model.requests.CreateBranchRequest;
-import com.muhammet.restaurantapplication.model.requests.UpdateBranchRequest;
-import com.muhammet.restaurantapplication.model.responses.GetBranchResponse;
+import com.muhammet.restaurantapplication.model.request.CreateBranchRequest;
+import com.muhammet.restaurantapplication.model.request.UpdateBranchRequest;
+import com.muhammet.restaurantapplication.model.response.GetBranchResponse;
 
 import java.util.List;
 

@@ -1,5 +1,6 @@
 package com.muhammet.restaurantapplication.model.converter;
 
+import com.muhammet.restaurantapplication.model.dto.BranchDto;
 import com.muhammet.restaurantapplication.model.dto.FoodDTO;
 import com.muhammet.restaurantapplication.model.entity.Food;
 import org.springframework.stereotype.Component;
@@ -11,7 +12,12 @@ public class FoodDtoConverter {
         return FoodDTO.builder()
                 .foodName(food.getFoodName())
                 .price(food.getPrice())
-                .branchId(food.getBranch().getId())
+                .branchDto(BranchDto.builder()
+                        .phone(food.getBranch().getPhone())
+                        .adress(food.getBranch().getAdress())
+                        .restaurantName(food.getBranch().getRestaurantId().getRestaurantName())
+                        .district(food.getBranch().getDistrict())
+                        .build())
                 .build();
     }
 

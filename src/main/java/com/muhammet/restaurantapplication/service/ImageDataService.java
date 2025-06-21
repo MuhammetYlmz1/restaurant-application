@@ -1,6 +1,6 @@
 package com.muhammet.restaurantapplication.service;
 
-import com.muhammet.restaurantapplication.model.responses.ImageUploadResponse;
+import com.muhammet.restaurantapplication.model.response.ImageUploadResponse;
 import com.muhammet.restaurantapplication.model.entity.ImageData;
 import org.springframework.web.multipart.MultipartFile;
 

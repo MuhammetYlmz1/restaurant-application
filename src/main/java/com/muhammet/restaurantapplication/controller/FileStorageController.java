@@ -1,7 +1,7 @@
 package com.muhammet.restaurantapplication.controller;
 
 import com.muhammet.restaurantapplication.model.dto.FileStorageDto;
-import com.muhammet.restaurantapplication.model.requests.UploadFileStorageRequest;
+import com.muhammet.restaurantapplication.model.request.UploadFileStorageRequest;
 import com.muhammet.restaurantapplication.service.FileService;
 import io.minio.messages.Bucket;
 import lombok.RequiredArgsConstructor;

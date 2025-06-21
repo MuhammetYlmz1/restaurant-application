@@ -5,7 +5,7 @@ import com.muhammet.restaurantapplication.mapper.BranchMapper;
 import com.muhammet.restaurantapplication.model.dto.BranchDto;
 import com.muhammet.restaurantapplication.model.entity.Branch;
 import com.muhammet.restaurantapplication.model.entity.Order;
-import com.muhammet.restaurantapplication.model.responses.GetOrderResponse;
+import com.muhammet.restaurantapplication.model.response.GetOrderResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

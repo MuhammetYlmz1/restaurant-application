@@ -1,8 +1,9 @@
 package com.muhammet.restaurantapplication.controller;
 
 import com.muhammet.restaurantapplication.model.dto.RestaurantDTO;
-import com.muhammet.restaurantapplication.model.requests.CreateRestaurantRequest;
-import com.muhammet.restaurantapplication.model.requests.UpdateRestaurantRequest;
+import com.muhammet.restaurantapplication.model.request.CreateRestaurantRequest;
+import com.muhammet.restaurantapplication.model.request.UpdateRestaurantRequest;
+import com.muhammet.restaurantapplication.model.response.RestaurantResponse;
 import com.muhammet.restaurantapplication.response.ApiResponse;
 import com.muhammet.restaurantapplication.service.RestaurantService;
 import org.springframework.http.ResponseEntity;
@@ -38,14 +39,17 @@ public class RestaurantController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RestaurantDTO> getByRestaurantId(@Valid @PathVariable Long id){
+    public ResponseEntity<RestaurantResponse> getByRestaurantId(@Valid @PathVariable Long id){
         return ResponseEntity.ok(restaurantService.getRestaurantById(id));
     }
 
     @GetMapping("/name")
-    public RestaurantDTO getByRestaurantName(@Valid @RequestParam("name") String restaurantName){
-        return restaurantService.findByRestaurantName(restaurantName);
+    public ResponseEntity<RestaurantResponse> getByRestaurantName(@Valid @RequestParam("name") String restaurantName){
+        return ResponseEntity.ok(restaurantService.findByRestaurantName(restaurantName));
     }
 
-
+    @PostMapping("/delete/{id}")
+    public ResponseEntity<Boolean> delete(@PathVariable Long id){
+        return ResponseEntity.ok(restaurantService.delete(id));
+    }
 }

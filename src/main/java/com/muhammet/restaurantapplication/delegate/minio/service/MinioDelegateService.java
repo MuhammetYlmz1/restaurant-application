@@ -1,6 +1,6 @@
 package com.muhammet.restaurantapplication.delegate.minio.service;
 
-import com.muhammet.restaurantapplication.model.responses.UploadResponse;
+import com.muhammet.restaurantapplication.model.response.UploadResponse;
 import io.minio.MinioClient;
 import io.minio.UploadObjectArgs;
 import lombok.RequiredArgsConstructor;

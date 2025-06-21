@@ -1,6 +1,6 @@
 package com.muhammet.restaurantapplication.service;
 
-import com.muhammet.restaurantapplication.model.responses.ClaimsResponse;
+import com.muhammet.restaurantapplication.model.response.ClaimsResponse;
 
 import java.util.Map;
 

@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "restaurants")
 @Entity
-public class Restaurant extends BaseEntity{
+public class Restaurant extends BaseEntity {
 
     @Id
     @Column(name = "id")
@@ -31,7 +31,11 @@ public class Restaurant extends BaseEntity{
     private String adress;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "restaurantId")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "restaurantId")
     private List<Branch> branchs;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RestaurantReview> reviews;
+
+    private boolean deleted;
 }

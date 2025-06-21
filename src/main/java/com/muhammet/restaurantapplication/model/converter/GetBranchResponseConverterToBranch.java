@@ -2,7 +2,7 @@ package com.muhammet.restaurantapplication.model.converter;
 
 import com.muhammet.restaurantapplication.mapper.BaseMapper;
 import com.muhammet.restaurantapplication.model.entity.Branch;
-import com.muhammet.restaurantapplication.model.responses.GetBranchResponse;
+import com.muhammet.restaurantapplication.model.response.GetBranchResponse;
 import org.springframework.stereotype.Component;
 
 @Component

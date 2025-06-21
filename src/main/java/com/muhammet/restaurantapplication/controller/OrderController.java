@@ -1,7 +1,7 @@
 package com.muhammet.restaurantapplication.controller;
 
-import com.muhammet.restaurantapplication.model.requests.CreateOrderRequest;
-import com.muhammet.restaurantapplication.model.responses.CreateOrderResponse;
+import com.muhammet.restaurantapplication.model.request.CreateOrderRequest;
+import com.muhammet.restaurantapplication.model.response.CreateOrderResponse;
 import com.muhammet.restaurantapplication.response.ApiResponse;
 import com.muhammet.restaurantapplication.service.OrderService;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +23,12 @@ public class OrderController {
     public ResponseEntity<ApiResponse<Object>> create(@RequestBody CreateOrderRequest createOrderRequest){
         CreateOrderResponse orderResponse = orderService.create(createOrderRequest);
         return ApiResponse.builder().data(orderResponse).build();
+    }
+
+    @PutMapping("/complete/{id}")
+    public ResponseEntity<ApiResponse<Object>> completeOrder(@PathVariable Long id){
+        var result = orderService.completeOrder(id);
+        return ApiResponse.builder().data(result).build();
     }
 
     @GetMapping

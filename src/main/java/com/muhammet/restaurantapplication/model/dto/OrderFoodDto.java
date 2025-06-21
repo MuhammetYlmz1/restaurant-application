@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderFoodDto {
-    FoodDTO food;
+    private FoodDTO food;
+    private OrderDto orderDto;
 }

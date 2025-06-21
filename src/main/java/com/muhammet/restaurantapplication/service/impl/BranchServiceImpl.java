@@ -3,12 +3,12 @@ package com.muhammet.restaurantapplication.service.impl;
 import com.muhammet.restaurantapplication.exception.BusinessException.Ex;
 import com.muhammet.restaurantapplication.exception.ExceptionUtil;
 import com.muhammet.restaurantapplication.mapper.BranchMapper;
-import com.muhammet.restaurantapplication.model.converter.RestaurantDtoToRestaurantConverter;
+import com.muhammet.restaurantapplication.model.converter.RestaurantResponseToRestaurantConverter;
 import com.muhammet.restaurantapplication.model.dto.FoodDTO;
 import com.muhammet.restaurantapplication.model.entity.Branch;
-import com.muhammet.restaurantapplication.model.requests.CreateBranchRequest;
-import com.muhammet.restaurantapplication.model.requests.UpdateBranchRequest;
-import com.muhammet.restaurantapplication.model.responses.GetBranchResponse;
+import com.muhammet.restaurantapplication.model.request.CreateBranchRequest;
+import com.muhammet.restaurantapplication.model.request.UpdateBranchRequest;
+import com.muhammet.restaurantapplication.model.response.GetBranchResponse;
 import com.muhammet.restaurantapplication.repository.BranchRepository;
 import com.muhammet.restaurantapplication.service.BranchService;
 import com.muhammet.restaurantapplication.service.FoodService;
@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -30,7 +31,7 @@ public class BranchServiceImpl implements BranchService {
     private final BranchMapper branchMapper;
     private final FoodService foodService;
     private final RestaurantService restaurantService;
-    private final RestaurantDtoToRestaurantConverter restaurantDtoToRestaurantConverter;
+    private final RestaurantResponseToRestaurantConverter restaurantResponseToRestaurantConverter;
     private final ModelMapper modelMapper;
 
     public List<GetBranchResponse> getAllBranchs(){
@@ -41,9 +42,10 @@ public class BranchServiceImpl implements BranchService {
         List<GetBranchResponse> branchDtoList = branches.stream().map(branchMapper::map).collect(Collectors.toList());
 
 
-        Map<Long,List<FoodDTO>> foodDTOMap=foodDTOS
+        Map<Long, List<FoodDTO>> foodDTOMap = foodDTOS
                 .stream()
-                .collect(Collectors.groupingBy(FoodDTO::getBranchId));
+                .filter(foodDTO -> foodDTO.getBranchDto() != null)
+                .collect(Collectors.groupingBy(foodDTO -> foodDTO.getBranchDto().getId()));
 
         Map<Long, GetBranchResponse> branchMapping= branchDtoList
                 .stream()
@@ -51,8 +53,11 @@ public class BranchServiceImpl implements BranchService {
 
         branchDtoList.forEach(branchDTO -> {
             Long branchId = branchDTO.getId();
-            List<FoodDTO> foodsForBranch = foodDTOMap.get(branchId);
+            List<FoodDTO> foodsForBranch = foodDTOMap.getOrDefault(branchId, Collections.emptyList());
             branchDTO.setMenu(foodsForBranch);
+            if (foodsForBranch.isEmpty()) {
+                System.out.println("No foods found for branchId: " + branchId);
+            }
         });
 
         return branchDtoList;
@@ -108,7 +113,7 @@ public class BranchServiceImpl implements BranchService {
                 .phone(createBranchRequest.getPhone())
                 .district(createBranchRequest.getDistrict())
                 .adress(createBranchRequest.getAdress())
-                .restaurantId(restaurantDtoToRestaurantConverter.map(restaurantService.getRestaurantById(createBranchRequest.getRestaurantId())))
+                .restaurantId(restaurantResponseToRestaurantConverter.map(restaurantService.getRestaurantById(createBranchRequest.getRestaurantId())))
                 .menu(null)
                 .orders(null)
                 .build();

@@ -1,7 +1,7 @@
 package com.muhammet.restaurantapplication.controller;
 
-import com.muhammet.restaurantapplication.model.dto.TokenResponseDto;
-import com.muhammet.restaurantapplication.model.requests.LoginRequest;
+import com.muhammet.restaurantapplication.model.response.TokenResponse;
+import com.muhammet.restaurantapplication.model.request.LoginRequest;
 import com.muhammet.restaurantapplication.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +17,8 @@ public class AuthController {
 
     private final AuthService authService;
 
-
-
     @PostMapping("/login")
-    public ResponseEntity<TokenResponseDto> login(@RequestBody LoginRequest loginRequest){
+    public ResponseEntity<TokenResponse> login(@RequestBody LoginRequest loginRequest){
         return ResponseEntity.ok(authService.login(loginRequest));
     }
 }

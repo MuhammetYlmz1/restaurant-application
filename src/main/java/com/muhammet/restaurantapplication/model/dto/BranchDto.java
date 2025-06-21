@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BranchDto {
-
+    private Long id;
     private String adress;
 
     private String phone;

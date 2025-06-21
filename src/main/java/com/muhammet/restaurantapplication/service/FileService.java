@@ -1,7 +1,7 @@
 package com.muhammet.restaurantapplication.service;
 
 import com.muhammet.restaurantapplication.model.dto.FileStorageDto;
-import com.muhammet.restaurantapplication.model.requests.UploadFileStorageRequest;
+import com.muhammet.restaurantapplication.model.request.UploadFileStorageRequest;
 import io.minio.messages.Bucket;
 import org.springframework.web.multipart.MultipartFile;
 

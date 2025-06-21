@@ -2,7 +2,7 @@ package com.muhammet.restaurantapplication.service.impl;
 
 import com.muhammet.restaurantapplication.comp.jwt.component.JwtComponent;
 import com.muhammet.restaurantapplication.exception.AuthorizationException;
-import com.muhammet.restaurantapplication.model.responses.ClaimsResponse;
+import com.muhammet.restaurantapplication.model.response.ClaimsResponse;
 import com.muhammet.restaurantapplication.service.TokenService;
 import io.jsonwebtoken.Claims;
 import lombok.AllArgsConstructor;

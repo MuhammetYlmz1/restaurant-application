@@ -1,9 +1,9 @@
 package com.muhammet.restaurantapplication.service;
 
-import com.muhammet.restaurantapplication.model.requests.CreateOrderRequest;
-import com.muhammet.restaurantapplication.model.responses.CreateOrderResponse;
-import com.muhammet.restaurantapplication.model.responses.GetOrderDetailResponse;
-import com.muhammet.restaurantapplication.model.responses.GetOrderResponse;
+import com.muhammet.restaurantapplication.model.request.CreateOrderRequest;
+import com.muhammet.restaurantapplication.model.response.CreateOrderResponse;
+import com.muhammet.restaurantapplication.model.response.GetOrderDetailResponse;
+import com.muhammet.restaurantapplication.model.response.GetOrderResponse;
 
 import java.util.List;
 
@@ -16,5 +16,7 @@ public interface OrderService {
 
     GetOrderDetailResponse getOrderDetaild(Long id);
 
-    void cancelOrder(Long id);
+    Boolean cancelOrder(Long id);
+
+    Boolean completeOrder(Long id);
 }

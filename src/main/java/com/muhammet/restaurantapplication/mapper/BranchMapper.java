@@ -1,6 +1,6 @@
 package com.muhammet.restaurantapplication.mapper;
 
-import com.muhammet.restaurantapplication.model.responses.GetBranchResponse;
+import com.muhammet.restaurantapplication.model.response.GetBranchResponse;
 import com.muhammet.restaurantapplication.model.entity.Branch;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

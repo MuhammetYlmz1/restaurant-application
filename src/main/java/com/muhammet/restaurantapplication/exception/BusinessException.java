@@ -74,7 +74,10 @@ public class BusinessException extends RuntimeException {
         IMAGEDATA_ALREADY_EXISTS_EXCEPTION("message.error.imagedata_already_exists_exception",HttpStatus.NOT_FOUND),
         WRONG_CREDENTIALS_EXCEPTION("messages.error.wrong_credentials_exception", HttpStatus.FORBIDDEN),
 
-        ORDER_NOT_FOUND("messages.error.order_not_found", HttpStatus.NOT_FOUND);
+        ORDER_NOT_FOUND("messages.error.order_not_found", HttpStatus.NOT_FOUND),
+        ORDER_ACCEPTED("messages.accepted.order",HttpStatus.ACCEPTED),
+        RESTAURANT_REVIEW_ALREADY_EXISTS_EXCEPTION(
+                "messages.error.restaurant_review_already_exists_exception", HttpStatus.BAD_REQUEST);
 
         private final String message;
         private final HttpStatus status;

@@ -1,12 +1,10 @@
 package com.muhammet.restaurantapplication.model.dto;
 
-import com.muhammet.restaurantapplication.model.responses.GetAllBranchResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -22,10 +20,7 @@ public class RestaurantDTO {
     private String restaurantName;
 
     private String phone;
-
     private String adress;
-
-    @Builder.Default
-    private List<GetAllBranchResponse> branchs = new ArrayList<>();
+    private List<GetAllBranchDto> branchs;
 
 }
